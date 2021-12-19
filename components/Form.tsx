@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { ImageDropDown } from './ImageDropDown';
 
 export const Form = () => {
   const {
@@ -14,6 +15,7 @@ export const Form = () => {
 
   return (
     <form className='flex flex-col w-4/5' onSubmit={handleSubmit(onSubmit)}>
+      <ImageDropDown />
       <input className='border-8' type='file' {...register('image')} />
       <input
         className='border-8'
