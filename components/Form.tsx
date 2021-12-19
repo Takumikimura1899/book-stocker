@@ -14,9 +14,9 @@ export const Form = () => {
   console.log(watch('title'));
 
   return (
-    <form className='flex flex-col w-4/5' onSubmit={handleSubmit(onSubmit)}>
+    <form className='flex flex-col w-1/4' onSubmit={handleSubmit(onSubmit)}>
       <ImageDropDown />
-      <input className='border-8' type='file' {...register('image')} />
+      {/* <input className='border-8' type='file' {...register('image')} /> */}
       <input
         className='border-8'
         placeholder='title'
