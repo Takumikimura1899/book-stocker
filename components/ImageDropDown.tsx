@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
+import { useForm } from 'react-hook-form';
 
 const thumbsContainer = {
   display: 'flex',
@@ -33,10 +34,14 @@ const img = {
 type MyFile = File & {
   preview: string;
 };
-export const ImageDropDown = () => {
+export const ImageDropDown = ({
+  onChange,
+}: {
+  onChange?: (...event: any[]) => void;
+}) => {
   const [files, setFiles] = useState<MyFile[]>([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    // accept: 'image/*',
     onDrop: (acceptedFiles) => {
       setFiles(
         acceptedFiles.map((file) =>
@@ -67,8 +72,10 @@ export const ImageDropDown = () => {
   return (
     <section className='container'>
       <div className='h-48 w-1/2 border-8 bg-lime-200' {...getRootProps()}>
-        <input {...getInputProps()} />
+        <input type='file' {...getInputProps({ onChange })} />
+        {/* <input type='file' {...register('image')} /> */}
         <p>画像</p>
+        {isDragActive ? <p>Drop the files here ...</p> : <p>Done</p>}
         <aside style={thumbsContainer}>{thumbs}</aside>
       </div>
     </section>

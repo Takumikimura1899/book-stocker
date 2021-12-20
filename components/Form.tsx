@@ -1,5 +1,10 @@
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  useFormContext,
+} from 'react-hook-form';
 import { ImageDropDown } from './ImageDropDown';
 
 export const Form = () => {
@@ -7,20 +12,28 @@ export const Form = () => {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (data) => console.log(data);
 
-  console.log(watch('title'));
+  console.log(watch('image'));
 
   return (
     <form className='flex flex-col w-1/4' onSubmit={handleSubmit(onSubmit)}>
-      <ImageDropDown />
+      <Controller
+        name='image'
+        control={control}
+        render={({ field: { onChange } }) => (
+          <ImageDropDown onChange={onChange} />
+        )}
+      />
+      {/* <ImageDropDown register={register} /> */}
       {/* <input className='border-8' type='file' {...register('image')} /> */}
       <input
         className='border-8'
         placeholder='title'
-        {...register('title', { required: true })}
+        {...register('title', { required: true, value: 'example value' })}
       />
       {errors.title && <span>This field is required</span>}
       <select className='border-8' {...register('genre', { required: true })}>
@@ -34,14 +47,14 @@ export const Form = () => {
       <input
         className='border-8'
         placeholder='author'
-        {...register('author', { required: true })}
+        {...register('author', { required: true, value: 'example value' })}
       />
       {errors.author && <span>This field is required</span>}
       <input
         type='number'
         className='border-8'
         placeholder='page'
-        {...register('page', { required: true })}
+        {...register('page', { required: true, value: 2 })}
       />
       {errors.page && <span>This field is required</span>}
       <select
