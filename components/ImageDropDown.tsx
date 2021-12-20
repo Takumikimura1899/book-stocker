@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
@@ -40,18 +40,30 @@ export const ImageDropDown = ({
   onChange?: (...event: any[]) => void;
 }) => {
   const [files, setFiles] = useState<MyFile[]>([]);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    // accept: 'image/*',
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
-    },
-  });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  //   // accept: 'image/*',
+  //   onDrop: (acceptedFiles) => {
+  //     setFiles(
+  //       acceptedFiles.map((file) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
+  //         })
+  //       )
+  //     );
+  //   },
+  // });
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    // Do something with the files
+    console.log({ acceptedFiles });
+    setFiles(
+      acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      )
+    );
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const thumbs = files.map((file) => (
     <div style={thumb} key={file.name}>
@@ -61,18 +73,18 @@ export const ImageDropDown = ({
     </div>
   ));
 
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
+  // useEffect(
+  //   () => () => {
+  //     // Make sure to revoke the data uris to avoid memory leaks
+  //     files.forEach((file) => URL.revokeObjectURL(file.preview));
+  //   },
+  //   [files]
+  // );
 
   return (
     <section className='container'>
       <div className='h-48 w-1/2 border-8 bg-lime-200' {...getRootProps()}>
-        <input type='file' {...getInputProps({ onChange })} />
+        <input {...getInputProps({ onChange })} />
         {/* <input type='file' {...register('image')} /> */}
         <p>画像</p>
         {isDragActive ? <p>Drop the files here ...</p> : <p>Done</p>}

@@ -25,7 +25,7 @@ export const Form = () => {
         name='image'
         control={control}
         render={({ field: { onChange } }) => (
-          <ImageDropDown onChange={onChange} />
+          <ImageDropDown onChange={(e: any) => onChange(e.target.files[0])} />
         )}
       />
       {/* <ImageDropDown register={register} /> */}
