@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
-import { useForm } from 'react-hook-form';
 
 const thumbsContainer = {
   display: 'flex',
@@ -36,8 +35,10 @@ type MyFile = File & {
 };
 export const ImageDropDown = ({
   onChange,
+  setValue,
 }: {
   onChange?: (...event: any[]) => void;
+  setValue: any;
 }) => {
   const [files, setFiles] = useState<MyFile[]>([]);
   // const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -52,17 +53,21 @@ export const ImageDropDown = ({
   //     );
   //   },
   // });
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Do something with the files
-    console.log({ acceptedFiles });
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      // Do something with the files
+      console.log({ acceptedFiles });
+      setValue('image', acceptedFiles[0]);
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+    [setValue]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const thumbs = files.map((file) => (
@@ -83,7 +88,7 @@ export const ImageDropDown = ({
 
   return (
     <section className='container'>
-      <div className='h-48 w-1/2 border-8 bg-lime-200' {...getRootProps()}>
+      <div className='h-48  border-8 bg-lime-200' {...getRootProps()}>
         <input {...getInputProps({ onChange })} />
         {/* <input type='file' {...register('image')} /> */}
         <p>画像</p>

@@ -13,6 +13,7 @@ export const Form = () => {
     handleSubmit,
     watch,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (data) => console.log(data);
@@ -25,7 +26,10 @@ export const Form = () => {
         name='image'
         control={control}
         render={({ field: { onChange } }) => (
-          <ImageDropDown onChange={(e: any) => onChange(e.target.files[0])} />
+          <ImageDropDown
+            onChange={(e: any) => onChange(e.target.files[0])}
+            setValue={setValue}
+          />
         )}
       />
       {/* <ImageDropDown register={register} /> */}
