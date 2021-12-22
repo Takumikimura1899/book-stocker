@@ -1,13 +1,8 @@
-import React from 'react';
-import {
-  useForm,
-  Controller,
-  SubmitHandler,
-  useFormContext,
-} from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { ImageDropDown } from './ImageDropDown';
 
-export const Form = () => {
+export const Form = ({ setImage }: any) => {
   const {
     register,
     handleSubmit,
@@ -16,7 +11,11 @@ export const Form = () => {
     setValue,
     formState: { errors },
   } = useForm<FormContents>();
-  const onSubmit: SubmitHandler<FormContents> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormContents> = (data) => {
+    console.log(data);
+    setImage(data.image);
+    localStorage.setItem('info', JSON.stringify(data));
+  };
 
   console.log(watch('image'));
 
@@ -32,8 +31,6 @@ export const Form = () => {
           />
         )}
       />
-      {/* <ImageDropDown register={register} /> */}
-      {/* <input className='border-8' type='file' {...register('image')} /> */}
       <input
         className='border-8'
         placeholder='title'

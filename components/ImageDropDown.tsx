@@ -90,7 +90,6 @@ export const ImageDropDown = ({
     <section className='container'>
       <div className='h-48  border-8 bg-lime-200' {...getRootProps()}>
         <input {...getInputProps({ onChange })} />
-        {/* <input type='file' {...register('image')} /> */}
         <p>画像</p>
         {isDragActive ? <p>Drop the files here ...</p> : <p>Done</p>}
         <aside style={thumbsContainer}>{thumbs}</aside>
