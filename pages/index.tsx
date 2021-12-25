@@ -11,7 +11,8 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className='pl-96 py-10'>
+      {/* 確認用スタイリング */}
+      <div className=''>
         <div className='text3xl font-bold underline text-indigo-500'>
           Hello World!
         </div>
