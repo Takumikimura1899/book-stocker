@@ -12,15 +12,16 @@ export const FormInputContentAtom = ({
     register,
     formState: { errors },
   } = useFormContext();
+  const defaultValue = type === 'number' ? 9999 : 'example value';
   return (
     <div>
       <label htmlFor={name}>{name}:</label>
       <input
         type={type}
         id={name}
-        className=''
+        className='border-2 w-full'
         placeholder={name}
-        {...register(name, { required: true, value: 'example value' })}
+        {...register(name, { required: true, value: defaultValue })}
       />
       {errors[name] && <span>This field is required</span>}
     </div>

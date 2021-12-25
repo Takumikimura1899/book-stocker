@@ -22,15 +22,16 @@ export const FormSelectContentAtom = ({
   });
   return (
     <div>
-      {/* <label htmlFor={name}>{name}:</label> */}
+      <label htmlFor={name}>{name}:</label>
       <Controller
         control={control}
         name={name}
         render={({ field: { onChange } }) => {
           return (
             <Select
+              defaultValue={options[0]}
               instanceId={name}
-              aria-label={name}
+              inputId={name}
               options={options}
               onChange={(value) => onChange(value?.value)}
             />

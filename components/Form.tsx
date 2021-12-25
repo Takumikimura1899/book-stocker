@@ -29,22 +29,23 @@ export const Form = ({ setImage }: any) => {
 
   return (
     <FormProvider {...methods}>
-      <form
-        className='grid grid-cols-2 w-1/4'
-        onSubmit={methods.handleSubmit(onSubmit)}
-      >
-        {/* <Controller
-        name='image'
-        control={control}
-        render={({ field: { onChange } }) => (
-          <ImageDropDown
-            onChange={(e: any) => onChange(e.target.files[0])}
-            setValue={setValue}
+      <div className='border-2 rounded-xl w-4/5 bg-gray-200 max-w-md'>
+        <form
+          className='grid grid-cols-2'
+          onSubmit={methods.handleSubmit(onSubmit)}
+        >
+          <Controller
+            name='image'
+            control={methods.control}
+            render={({ field: { onChange } }) => (
+              <ImageDropDown
+                onChange={(e: any) => onChange(e.target.files[0])}
+                setValue={methods.setValue}
+              />
+            )}
           />
-        )}
-      /> */}
-        <div>
-          {/* <label htmlFor='Title'>Title:</label>
+          <div className=''>
+            {/* <label htmlFor='Title'>Title:</label>
         <input
           id='Title'
           className=''
@@ -52,26 +53,26 @@ export const Form = ({ setImage }: any) => {
           {...register('title', { required: true, value: 'example value' })}
         />
         {errors.title && <span>This field is required</span>} */}
-          <FormInputContentAtom name='title' type='text' />
-          <FormSelectContentAtom
-            name='genre'
-            value={['マンガ', '雑誌', 'ビジネス', '文学', 'IT', '趣味']}
-          />
-          <FormInputContentAtom name='author' type='text' />
-          <FormInputContentAtom name='page' type='number' />
-          <FormSelectContentAtom
-            name='status'
-            value={['未読', '読中', '読了']}
-          />
-          {/* <select className='' {...register('genre', { required: true })}>
+            <FormInputContentAtom name='title' type='text' />
+            <FormSelectContentAtom
+              name='genre'
+              value={['マンガ', '雑誌', 'ビジネス', '文学', 'IT', '趣味']}
+            />
+            <FormInputContentAtom name='author' type='text' />
+            <FormInputContentAtom name='page' type='number' />
+            <FormSelectContentAtom
+              name='status'
+              value={['未読', '読中', '読了']}
+            />
+            {/* <select className='' {...register('genre', { required: true })}>
           <option value='マンガ'>マンガ</option>
           <option value='雑誌'>雑誌</option>
           <option value='ビジネス'>ビジネス</option>
           <option value='文学'>文学</option>
           <option value='IT'>IT</option>
           <option value='趣味'>趣味</option>
-        </select>
-        <input
+          </select>
+          <input
           className=''
           placeholder='author'
           {...register('author', { required: true, value: 'example value' })}
@@ -93,9 +94,10 @@ export const Form = ({ setImage }: any) => {
           <option value='読中'>読中</option>
           <option value='読了'>読了</option>
         </select> */}
-        </div>
-        <input className='' type='submit' />
-      </form>
+          </div>
+          <input className='' type='submit' />
+        </form>
+      </div>
     </FormProvider>
   );
 };

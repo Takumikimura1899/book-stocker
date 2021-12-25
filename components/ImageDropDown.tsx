@@ -71,9 +71,9 @@ export const ImageDropDown = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const thumbs = files.map((file) => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <Image src={file.preview} alt='iamge' width={100} height={100} />
+    <div className='p-2 ' key={file.name}>
+      <div>
+        <Image src={file.preview} alt='iamge' width={150} height={150} />
       </div>
     </div>
   ));
@@ -87,8 +87,8 @@ export const ImageDropDown = ({
   // );
 
   return (
-    <section className='container'>
-      <div className='h-48  border-8 bg-lime-200' {...getRootProps()}>
+    <section className=''>
+      <div className='h-full rounded-xl bg-teal-200' {...getRootProps()}>
         <input {...getInputProps({ onChange })} />
         <p>画像</p>
         {isDragActive ? <p>Drop the files here ...</p> : <p>Done</p>}
