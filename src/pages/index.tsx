@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Form } from '../components/Form';
 
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
         >
           ゲット
         </button>
+        <Link href='/contents/contents'>firebaseContents</Link>
         {showImage && (
           <Image src={image!.preview} alt='iamge' width={100} height={100} />
         )}

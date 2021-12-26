@@ -5,6 +5,7 @@ import {
   SubmitHandler,
   FormProvider,
 } from 'react-hook-form';
+import { addFirebaseData } from '../lib/firebase';
 import { FormInputContentAtom } from './atoms/FormContentAtom';
 import { FormSelectContentAtom } from './atoms/FormSelectContentAtom';
 import { ImageDropDown } from './ImageDropDown';
@@ -23,6 +24,7 @@ export const Form = ({ setImage }: any) => {
     console.log(data);
     setImage(data.image);
     localStorage.setItem('info', JSON.stringify(data));
+    addFirebaseData('bookInfo', data);
   };
 
   console.log(methods.watch('image'));
