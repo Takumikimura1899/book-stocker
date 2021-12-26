@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Form } from '../components/Form';
-import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
   const [image, setImage] = useState<{ preview: string }>();
