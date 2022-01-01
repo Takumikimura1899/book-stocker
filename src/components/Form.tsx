@@ -20,11 +20,18 @@ export const Form = ({ setImage }: any) => {
   //   formState: { errors },
   // } = useForm<FormContents>();
   const methods = useForm<FormContents>();
-  const onSubmit: SubmitHandler<FormContents> = (data) => {
-    console.log(data);
-    setImage(data.image);
-    localStorage.setItem('info', JSON.stringify(data));
-    addFirebaseData('bookInfo', data);
+  const onSubmit: SubmitHandler<FormContents> = (content) => {
+    console.log(content);
+    // const imageUrl = content.title;
+    // const data = content.image
+    //   ? { ...content, image: { ...content.image, name: imageUrl } }
+    //   : content;
+    // console.log(data.image);
+
+    setImage(content.image);
+
+    localStorage.setItem('info', JSON.stringify(content));
+    addFirebaseData('bookInfo', content);
   };
 
   console.log(methods.watch('image'));

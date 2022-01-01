@@ -1,5 +1,5 @@
 type FormContents = {
-  image?: any;
+  image?: File;
   title: string;
   genre: BookGenre;
   author: string;

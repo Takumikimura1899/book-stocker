@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
@@ -8,6 +8,7 @@ import {
   setDoc,
   addDoc,
 } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -20,6 +21,7 @@ export const firebaseConfig = {
 };
 export const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore();
+export const storage = getStorage(firebaseApp);
 
 // export const getFirebaseData = async (path: string) => {
 //   const pathCol = collection(db, path);
@@ -51,7 +53,18 @@ export const getFirebaseCollection = async (path: string) => {
 };
 
 export const addFirebaseData = async (path: string, content: FormContents) => {
-  const data = { ...content, image: content.image.path };
+  const imageUrl = `${content.title}.jpg`;
+  console.log(content.image);
+
+  const data = content.image
+    ? { ...content, image: { ...content.image, name: imageUrl } }
+    : content;
+  console.log(data.image);
+  const storageRef = ref(storage, data.image!.name);
+  uploadBytes(storageRef, data.image!).then((snapshot) => {
+    console.log('Upload a blob or file!');
+  });
+
   console.log(data);
 
   const docRef = await addDoc(collection(db, path), data);
