@@ -57,6 +57,15 @@ export const ImageDropDown = ({
     (acceptedFiles: File[]) => {
       // Do something with the files
       console.log({ acceptedFiles });
+      // const acceptedFile = acceptedFiles[0];
+      console.log(acceptedFiles[0]);
+      // const reader = new FileReader();
+      // reader.onload = () => {
+      //   const binaryStr = reader.result;
+      //   console.log(binaryStr);
+      // };
+      // console.log(reader.readAsDataURL(acceptedFile));
+
       setValue('image', acceptedFiles[0]);
       setFiles(
         acceptedFiles.map((file) =>

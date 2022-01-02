@@ -54,18 +54,19 @@ export const getFirebaseCollection = async (path: string) => {
 
 export const addFirebaseData = async (path: string, content: FormContents) => {
   const imageUrl = `${content.title}.jpg`;
-  console.log(content.image);
+  // console.log(content.image);
 
-  const data = content.image
-    ? { ...content, image: { ...content.image, name: imageUrl } }
-    : content;
-  console.log(data.image);
-  const storageRef = ref(storage, data.image!.name);
-  uploadBytes(storageRef, data.image!).then((snapshot) => {
+  const data = { ...content, image: imageUrl };
+  // const data = content.image
+  //   ? { ...content, image: { ...content.image, name: imageUrl } }
+  //   : content;
+  // console.log(data.image);
+  const storageRef = ref(storage, content.image?.name);
+  uploadBytes(storageRef, content.image!).then((snapshot) => {
     console.log('Upload a blob or file!');
   });
 
-  console.log(data);
+  // console.log(data);
 
   const docRef = await addDoc(collection(db, path), data);
   console.log('Document written with ID:', docRef.id);

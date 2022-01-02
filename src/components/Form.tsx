@@ -28,7 +28,7 @@ export const Form = ({ setImage }: any) => {
     //   : content;
     // console.log(data.image);
 
-    setImage(content.image);
+    // setImage(content.image);
 
     localStorage.setItem('info', JSON.stringify(content));
     addFirebaseData('bookInfo', content);
