@@ -53,7 +53,12 @@ export const getFirebaseCollection = async (path: string) => {
 };
 
 export const addFirebaseData = async (path: string, content: FormContents) => {
-  const imageUrl = `${content.title}.jpg`;
+  // const reader = new FileReader()
+
+  // const imageBase64 = reader.readAsDataURL(content.image!)
+  // console.log(imageBase64);
+
+  const imageUrl = content.title;
   // console.log(content.image);
 
   const data = { ...content, image: imageUrl };
@@ -61,7 +66,7 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
   //   ? { ...content, image: { ...content.image, name: imageUrl } }
   //   : content;
   // console.log(data.image);
-  const storageRef = ref(storage, content.image?.name);
+  const storageRef = ref(storage, `images/${imageUrl}/${content.image?.name}`);
   uploadBytes(storageRef, content.image!).then((snapshot) => {
     console.log('Upload a blob or file!');
   });
