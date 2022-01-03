@@ -35,12 +35,14 @@ export const storage = getStorage(firebaseApp);
 export const getFirebaseData = async (path: string, id: string) => {
   const docRef = doc(db, path, id);
   const docSnap = await getDoc(docRef);
+  const data = docSnap.data();
 
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());
   } else {
     console.log('No such document!');
   }
+  return data;
 };
 
 export const getFirebaseCollection = async (path: string) => {
@@ -54,6 +56,17 @@ export const getFirebaseCollection = async (path: string) => {
 };
 
 export const firebaseCollectionId = async () => {
+  const posts: string[] = [];
+  const querySnapshot = await getDocs(collection(db, 'bookInfo'));
+
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.id);
+  });
+  console.log(posts);
+
+  return posts;
+};
+export const firebaseCollectionData = async () => {
   const posts: string[] = [];
   const querySnapshot = await getDocs(collection(db, 'bookInfo'));
 
