@@ -3337,6 +3337,11 @@ react-dropzone@*, react-dropzone@^11.4.2:
     file-selector "^0.2.2"
     prop-types "^15.7.2"
 
+react-firebase-hooks@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-firebase-hooks/-/react-firebase-hooks-4.0.1.tgz#5c2483b0a240eb05cb9467cb1c07b2c721bef6c2"
+  integrity sha512-JinNQRMzu905KWSCWppOZTUeOJArXvWdcTAsamjgDX/ZMF9QH5d+BZpnapEaIL70ifCDe/Ax9wzn9vlAufIymw==
+
 react-hook-form@^7.22.2:
   version "7.22.2"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.22.2.tgz#aa66fd75cad858049739770341079d9787683c6b"
