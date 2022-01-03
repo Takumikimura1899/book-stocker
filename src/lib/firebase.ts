@@ -9,6 +9,7 @@ import {
   addDoc,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -52,6 +53,18 @@ export const getFirebaseCollection = async (path: string) => {
   return querySnapshot.docs[0].id;
 };
 
+export const firebaseCollectionId = async () => {
+  const posts: string[] = [];
+  const querySnapshot = await getDocs(collection(db, 'bookInfo'));
+
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.id);
+  });
+  console.log(posts);
+
+  return posts;
+};
+
 export const addFirebaseData = async (path: string, content: FormContents) => {
   // const reader = new FileReader()
 
@@ -76,3 +89,8 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
   const docRef = await addDoc(collection(db, path), data);
   console.log('Document written with ID:', docRef.id);
 };
+
+// export const FireStoreCollection = (path:string) => {
+//   const [value] = useCollection(collection(db, 'bookInfo'));
+//   return value;
+// };

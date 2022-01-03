@@ -1,4 +1,6 @@
 import React from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { firebaseCollectionId } from '~/src/lib/firebase';
 
 const mainPage = ({ posts }: any) => {
   return (
