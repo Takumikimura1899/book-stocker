@@ -35,8 +35,9 @@ export const storage = getStorage(firebaseApp);
 export const getFirebaseData = async (path: string, id: string) => {
   const docRef = doc(db, path, id);
   const docSnap = await getDoc(docRef);
-  const data = docSnap.data();
 
+  // asを使用しているのでwithConverterで型付けしたい。
+  const data = docSnap.data() as Content;
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());
   } else {

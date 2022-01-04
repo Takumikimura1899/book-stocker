@@ -1,34 +1,46 @@
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { firebaseCollectionId, getFirebaseData } from '~/src/lib/firebase';
 
-const mainPage = ({ posts }: any) => {
+interface Props {
+  content: Content;
+}
+
+interface Params extends ParsedUrlQuery {
+  id: string;
+}
+
+const mainPage: NextPage<Props> = ({ content }) => {
   return (
     // <ul>
     //   {posts.map((post: any, index: number) => (
     //     <li key={index}>{post.title}</li>
     //   ))}
     // </ul>
-    <div>{posts.title}</div>
+    <div>{content.page}</div>
   );
 };
 
-export async function getStaticPaths() {
-  const posts = await firebaseCollectionId();
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
+  const ids = await firebaseCollectionId();
 
-  const paths = posts.map((post) => ({
-    params: { id: post },
+  const paths = ids.map((id) => ({
+    params: { id },
   }));
 
   return { paths, fallback: false };
-}
+};
 
-export async function getStaticProps({ params }: any) {
-  const posts = await getFirebaseData('bookInfo', params.id);
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+}) => {
+  const content = await getFirebaseData('bookInfo', params!.id);
   return {
     props: {
-      posts,
+      content,
     },
   };
-}
+};
 export default mainPage;
