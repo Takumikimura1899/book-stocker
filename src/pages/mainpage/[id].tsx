@@ -1,8 +1,13 @@
+import Image from 'next/image';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { firebaseCollectionId, getFirebaseData } from '~/src/lib/firebase';
+import {
+  firebaseCollectionId,
+  getFirebaseData,
+  getStorageImage,
+} from '~/src/lib/firebase';
 
 interface Props {
   content: Content;
@@ -14,12 +19,10 @@ interface Params extends ParsedUrlQuery {
 
 const mainPage: NextPage<Props> = ({ content }) => {
   return (
-    // <ul>
-    //   {posts.map((post: any, index: number) => (
-    //     <li key={index}>{post.title}</li>
-    //   ))}
-    // </ul>
-    <div>{content.page}</div>
+    <>
+      <Image src={content.image!} alt='img' width={300} height={300} />
+      <div>{content.page}</div>
+    </>
   );
 };
 
@@ -36,7 +39,10 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const content = await getFirebaseData('bookInfo', params!.id);
+  const contents = await getFirebaseData('bookInfo', params!.id);
+  const title = contents.title;
+  const image = await getStorageImage(title);
+  const content = { ...contents, image };
   return {
     props: {
       content,

@@ -8,7 +8,7 @@ import {
   setDoc,
   addDoc,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 export const firebaseConfig = {
@@ -93,7 +93,7 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
   //   ? { ...content, image: { ...content.image, name: imageUrl } }
   //   : content;
   // console.log(data.image);
-  const storageRef = ref(storage, `images/${imageUrl}/${content.image?.name}`);
+  const storageRef = ref(storage, `images/${imageUrl}/file.jpg`);
   uploadBytes(storageRef, content.image!).then((snapshot) => {
     console.log('Upload a blob or file!');
   });
@@ -108,3 +108,7 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
 //   const [value] = useCollection(collection(db, 'bookInfo'));
 //   return value;
 // };
+
+export const getStorageImage = async (title: string) => {
+  return await getDownloadURL(ref(storage, `images/${title}/file.jpg`));
+};
