@@ -18,6 +18,8 @@ interface Params extends ParsedUrlQuery {
 }
 
 const mainPage: NextPage<Props> = ({ content }) => {
+  const { image } = content;
+
   return (
     <>
       <div className='grid grid-cols-3 '>
@@ -44,7 +46,7 @@ const mainPage: NextPage<Props> = ({ content }) => {
         </div>
         <div></div>
         <div className=' px-2 pt-2'>
-          {content.image && (
+          {image !== 'none' ? (
             <Image
               src={content.image!}
               //   layout={'fill'}
@@ -53,6 +55,8 @@ const mainPage: NextPage<Props> = ({ content }) => {
               width={500}
               height={500}
             />
+          ) : (
+            <p>none</p>
           )}
         </div>
         <div className='col-span-2'>

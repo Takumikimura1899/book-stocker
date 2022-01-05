@@ -29,8 +29,6 @@ export const Form = ({ setImage }: any) => {
     // console.log(data.image);
 
     // setImage(content.image);
-
-    localStorage.setItem('info', JSON.stringify(content));
     addFirebaseData('bookInfo', content);
     firebaseCollectionId();
   };

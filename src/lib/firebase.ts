@@ -7,6 +7,7 @@ import {
   getDocs,
   setDoc,
   addDoc,
+  initializeFirestore,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -20,8 +21,12 @@ export const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
+
 export const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore();
+export const firestoreApp = initializeFirestore(firebaseApp, {
+  ignoreUndefinedProperties: true,
+});
+export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
 // export const getFirebaseData = async (path: string) => {
@@ -80,28 +85,23 @@ export const firebaseCollectionData = async () => {
 };
 
 export const addFirebaseData = async (path: string, content: FormContents) => {
-  // const reader = new FileReader()
+  if (content.image) {
+    const imageUrl = content.title;
+    const data = { ...content, image: imageUrl };
+    const storageRef = ref(storage, `images/${imageUrl}/file.jpg`);
+    uploadBytes(storageRef, content.image!).then((snapshot) => {
+      console.log('Upload a blob or file!');
+    });
+    const docRef = await addDoc(collection(db, path), data);
+    console.log('Document written with ID:', docRef.id);
+  } else {
+    console.log(content);
 
-  // const imageBase64 = reader.readAsDataURL(content.image!)
-  // console.log(imageBase64);
-
-  const imageUrl = content.title;
-  // console.log(content.image);
-
-  const data = { ...content, image: imageUrl };
-  // const data = content.image
-  //   ? { ...content, image: { ...content.image, name: imageUrl } }
-  //   : content;
-  // console.log(data.image);
-  const storageRef = ref(storage, `images/${imageUrl}/file.jpg`);
-  uploadBytes(storageRef, content.image!).then((snapshot) => {
-    console.log('Upload a blob or file!');
-  });
+    const docRef = await addDoc(collection(db, path), content);
+    console.log('Document written with ID:', docRef.id);
+  }
 
   // console.log(data);
-
-  const docRef = await addDoc(collection(db, path), data);
-  console.log('Document written with ID:', docRef.id);
 };
 
 // export const FireStoreCollection = (path:string) => {
@@ -110,5 +110,7 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
 // };
 
 export const getStorageImage = async (title: string) => {
-  return await getDownloadURL(ref(storage, `images/${title}/file.jpg`));
+  return await getDownloadURL(ref(storage, `images/${title}/file.jpg`)).catch(
+    () => 'none'
+  );
 };
