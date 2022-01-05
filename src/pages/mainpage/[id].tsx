@@ -20,8 +20,54 @@ interface Params extends ParsedUrlQuery {
 const mainPage: NextPage<Props> = ({ content }) => {
   return (
     <>
-      <Image src={content.image!} alt='img' width={300} height={300} />
-      <div>{content.page}</div>
+      <div className='grid grid-cols-3 '>
+        <div>
+          <span>タイトル:</span>
+          {content.title}
+        </div>
+        <div>
+          <span>ジャンル:</span>
+          {content.genre}
+        </div>
+        <div>
+          <span>著者:</span>
+          {content.author}
+        </div>
+        <div>
+          <span>ページ数:</span>
+          {content.page}
+        </div>
+
+        <div>
+          <span>ステータス:</span>
+          {content.status}
+        </div>
+        <div></div>
+        <div className=' px-2 pt-2'>
+          {content.image && (
+            <Image
+              src={content.image!}
+              //   layout={'fill'}
+              //   objectFit={'contain'}
+              alt='img'
+              width={500}
+              height={500}
+            />
+          )}
+        </div>
+        <div className='col-span-2'>
+          <div>
+            <p>要約:</p>
+            <textarea
+              className='bg-indigo-500 w-full'
+              name='要約'
+              id=''
+              cols={30}
+              rows={10}
+            ></textarea>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
