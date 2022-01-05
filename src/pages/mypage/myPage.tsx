@@ -19,7 +19,7 @@ interface Props {
 import React from 'react';
 import Link from 'next/link';
 
-const myPage: NextPage<Props> = ({ results }) => {
+const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);
 
   return (
@@ -88,4 +88,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
-export default myPage;
+export default MyPage;
