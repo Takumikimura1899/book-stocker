@@ -18,18 +18,21 @@ interface Props {
 
 import React from 'react';
 import Link from 'next/link';
+import { Navbar } from '~/src/components/molecules/Navbar';
+import { MyPageContentAtom } from '~/src/components/atoms/MyPageContentAtom';
 
 const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);
 
   return (
     <>
+      <Navbar />
       {results.map((result, index) => {
         const { image } = result;
         return (
-          <div key={index} className='flex items-center justify-between h-40'>
+          <div key={index} className='flex items-center justify-around py-8'>
             <Link href={`http://localhost:3000/mainpage/${result.id}`} passHref>
-              <div className=''>
+              <MyPageContentAtom>
                 <p>{result.title}</p>
                 {image ? (
                   <Image
@@ -41,27 +44,14 @@ const MyPage: NextPage<Props> = ({ results }) => {
                     height={100}
                   />
                 ) : (
-                  <p>none</p>
+                  <p className='h-20  text-center '>none</p>
                 )}
-              </div>
+              </MyPageContentAtom>
             </Link>
-            <div>
-              <span>ジャンル:</span>
-              {result.genre}
-            </div>
-            <div>
-              <span>著者:</span>
-              {result.author}
-            </div>
-            <div>
-              <span>ページ数:</span>
-              {result.page}
-            </div>
-
-            <div>
-              <span>ステータス:</span>
-              {result.status}
-            </div>
+            <MyPageContentAtom>{result.genre}</MyPageContentAtom>
+            <MyPageContentAtom>{result.author}</MyPageContentAtom>
+            <MyPageContentAtom>{result.page}</MyPageContentAtom>
+            <MyPageContentAtom>{result.status}</MyPageContentAtom>
           </div>
         );
       })}
