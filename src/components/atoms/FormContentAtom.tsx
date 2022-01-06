@@ -1,13 +1,12 @@
 import React from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 
-export const FormInputContentAtom = ({
-  name,
-  type,
-}: {
+type Props = {
   name: string;
   type: string;
-}) => {
+};
+
+export const FormInputContentAtom: React.FC<Props> = ({ name, type }) => {
   const {
     register,
     formState: { errors },

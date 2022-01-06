@@ -17,9 +17,9 @@ interface Props {
 }
 
 import React from 'react';
-import Link from 'next/link';
 import { Navbar } from '~/src/components/molecules/Navbar';
 import { MyPageContentAtom } from '~/src/components/atoms/MyPageContentAtom';
+import { MyPageContentImageAtom } from '~/src/components/atoms/MyPagecontentImageAtom';
 
 const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);
@@ -31,23 +31,11 @@ const MyPage: NextPage<Props> = ({ results }) => {
         const { image } = result;
         return (
           <div key={index} className='flex items-center justify-around py-8'>
-            <Link href={`http://localhost:3000/mainpage/${result.id}`} passHref>
-              <MyPageContentAtom>
-                <p>{result.title}</p>
-                {image ? (
-                  <Image
-                    src={image!}
-                    //   layout={'fill'}
-                    //   objectFit={'contain'}
-                    alt='img'
-                    width={100}
-                    height={100}
-                  />
-                ) : (
-                  <p className='h-20  text-center '>none</p>
-                )}
-              </MyPageContentAtom>
-            </Link>
+            <MyPageContentImageAtom
+              title={result.title}
+              image={image}
+              id={result.id}
+            />
             <MyPageContentAtom>{result.genre}</MyPageContentAtom>
             <MyPageContentAtom>{result.author}</MyPageContentAtom>
             <MyPageContentAtom>{result.page}</MyPageContentAtom>
