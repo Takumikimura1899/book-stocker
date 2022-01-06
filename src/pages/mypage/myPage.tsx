@@ -18,8 +18,8 @@ interface Props {
 
 import React from 'react';
 import { Navbar } from '~/src/components/molecules/Navbar';
-import { MyPageContentAtom } from '~/src/components/atoms/MyPageContentAtom';
-import { MyPageContentImageAtom } from '~/src/components/atoms/MyPagecontentImageAtom';
+import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
+import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 
 const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);

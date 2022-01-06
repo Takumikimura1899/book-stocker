@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import {
   firebaseCollectionId,
   getFirebaseData,
   getStorageImage,
 } from '~/src/lib/firebase';
+import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
 
 interface Props {
   content: Content;
@@ -18,33 +18,17 @@ interface Params extends ParsedUrlQuery {
 }
 
 const mainPage: NextPage<Props> = ({ content }) => {
-  const { image } = content;
-
+  const { image, title, genre, author, page, status } = content;
   return (
     <>
       <div className='grid grid-cols-3 '>
-        <div>
-          <span>タイトル:</span>
-          {content.title}
-        </div>
-        <div>
-          <span>ジャンル:</span>
-          {content.genre}
-        </div>
-        <div>
-          <span>著者:</span>
-          {content.author}
-        </div>
-        <div>
-          <span>ページ数:</span>
-          {content.page}
-        </div>
-
-        <div>
-          <span>ステータス:</span>
-          {content.status}
-        </div>
+        <MainPageContentAtom title='タイトル:' value={title} />
+        <MainPageContentAtom title='ジャンル:' value={genre} />
+        <MainPageContentAtom title='著者:' value={author} />
+        <MainPageContentAtom title='ページ数:' value={page} />
+        <MainPageContentAtom title='ステータス:' value={status} />
         <div></div>
+
         <div className=' px-2 pt-2'>
           {image !== 'none' ? (
             <Image

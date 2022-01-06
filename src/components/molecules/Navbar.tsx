@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavbarContentAtom } from '../atoms/NavbarContentAtom';
+import { NavbarContentAtom } from '../atoms/navbarAtom/NavbarContentAtom';
 
 export const Navbar = () => {
   return (

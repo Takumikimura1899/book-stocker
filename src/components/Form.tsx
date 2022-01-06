@@ -6,8 +6,8 @@ import {
   FormProvider,
 } from 'react-hook-form';
 import { addFirebaseData, firebaseCollectionId } from '../lib/firebase';
-import { FormInputContentAtom } from './atoms/FormContentAtom';
-import { FormSelectContentAtom } from './atoms/FormSelectContentAtom';
+import { FormInputContentAtom } from './atoms/formAtom/FormContentAtom';
+import { FormSelectContentAtom } from './atoms/formAtom/FormSelectContentAtom';
 import { ImageDropDown } from './ImageDropDown';
 
 export const Form = ({ setImage }: any) => {
