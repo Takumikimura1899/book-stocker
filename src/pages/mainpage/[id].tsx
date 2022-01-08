@@ -8,6 +8,7 @@ import {
   getStorageImage,
 } from '~/src/lib/firebase';
 import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
+import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
 
 interface Props {
   content: Content;
@@ -21,29 +22,38 @@ const mainPage: NextPage<Props> = ({ content }) => {
   const { image, title, genre, author, page, status } = content;
   return (
     <>
-      <div className='grid grid-cols-3 '>
-        <MainPageContentAtom title='タイトル:' value={title} />
-        <MainPageContentAtom title='ジャンル:' value={genre} />
-        <MainPageContentAtom title='著者:' value={author} />
-        <MainPageContentAtom title='ページ数:' value={page} />
-        <MainPageContentAtom title='ステータス:' value={status} />
-        <div></div>
+      <div className='grid grid-cols-3 grid-rows-5 h-screen font-bold text-xl '>
+        <MainPageContentAtom
+          title='タイトル:'
+          value={title}
+          className='col-span-3 text-5xl'
+        />
+        <MainPageContentImageAtom
+          image={image}
+          className='row-span-2 row-start-2'
+        />
+        <MainPageContentAtom
+          title='ジャンル:'
+          value={genre}
+          className='row-start-2 text-center my-auto'
+        />
+        <MainPageContentAtom
+          title='著者:'
+          value={author}
+          className='row-start-2'
+        />
+        <MainPageContentAtom
+          title='ページ数:'
+          value={page}
+          className='row-start-3'
+        />
+        <MainPageContentAtom
+          title='ステータス:'
+          value={status}
+          className='row-start-3'
+        />
 
-        <div className=' px-2 pt-2'>
-          {image !== 'none' ? (
-            <Image
-              src={content.image!}
-              //   layout={'fill'}
-              //   objectFit={'contain'}
-              alt='img'
-              width={500}
-              height={500}
-            />
-          ) : (
-            <p>none</p>
-          )}
-        </div>
-        <div className='col-span-2'>
+        <div className='col-span-3'>
           <div>
             <p>要約:</p>
             <textarea
