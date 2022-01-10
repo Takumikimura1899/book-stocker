@@ -1,4 +1,4 @@
-import { signInWithGoogle } from '~/src/lib/firebaseAuth';
+import { signInWithGoogle, logOut, userCheck } from '~/src/lib/firebaseAuth';
 
 const Login = () => {
   return (
@@ -6,6 +6,8 @@ const Login = () => {
       <button onClick={() => signInWithGoogle()}>
         Googleアカウントでログイン
       </button>
+      <button onClick={() => logOut()}>ログアウト</button>
+      <button onClick={() => userCheck()}>ユーザーIDチェック</button>
     </div>
   );
 };
