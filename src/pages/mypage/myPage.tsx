@@ -20,29 +20,32 @@ import React from 'react';
 import { Navbar } from '~/src/components/molecules/Navbar';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
+import { Layout } from '~/src/components/layout/Layout';
 
 const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);
 
   return (
     <>
-      <Navbar />
-      {results.map((result, index) => {
-        const { image } = result;
-        return (
-          <div key={index} className='flex items-center justify-around py-8'>
-            <MyPageContentImageAtom
-              title={result.title}
-              image={image}
-              id={result.id}
-            />
-            <MyPageContentAtom>{result.genre}</MyPageContentAtom>
-            <MyPageContentAtom>{result.author}</MyPageContentAtom>
-            <MyPageContentAtom>{result.page}</MyPageContentAtom>
-            <MyPageContentAtom>{result.status}</MyPageContentAtom>
-          </div>
-        );
-      })}
+      <Layout>
+        <Navbar />
+        {results.map((result, index) => {
+          const { image } = result;
+          return (
+            <div key={index} className='flex items-center justify-around py-8'>
+              <MyPageContentImageAtom
+                title={result.title}
+                image={image}
+                id={result.id}
+              />
+              <MyPageContentAtom>{result.genre}</MyPageContentAtom>
+              <MyPageContentAtom>{result.author}</MyPageContentAtom>
+              <MyPageContentAtom>{result.page}</MyPageContentAtom>
+              <MyPageContentAtom>{result.status}</MyPageContentAtom>
+            </div>
+          );
+        })}
+      </Layout>
     </>
   );
 };

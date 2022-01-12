@@ -4,12 +4,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Form } from '../components/Form';
+import { Layout } from '../components/layout/Layout';
 
 const Home: NextPage = () => {
   return (
     <>
-      <Link href={'/mypage/myPage'}>myPage</Link>
-      <Link href={'/addpage/addpage'}>addPage</Link>
+      <Layout>
+        <Link href={'/mypage/myPage'}>myPage</Link>
+        <Link href={'/addpage/addpage'}>addPage</Link>
+      </Layout>
     </>
   );
   // const [image, setImage] = useState<{ preview: string }>();

@@ -1,4 +1,5 @@
 import { onAuthStateChanged, User } from '@firebase/auth';
+import Router, { useRouter } from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../lib/firebaseAuth';
 
@@ -6,19 +7,19 @@ type AuthContextProps = {
   currentUser?: User | null;
 };
 
-const AuthContext = createContext<AuthContextProps>({});
+export const AuthContext = createContext<AuthContextProps>({});
 
 export const AuthContextProvider: React.FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>();
+  const router = useRouter();
 
   useEffect(() => {
-    const unSub = () =>
-      onAuthStateChanged(auth, (user) => {
-        setCurrentUser(user);
-      });
-    return () => {
-      unSub();
-    };
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (!user) {
+        Router.push('/login/login');
+      }
+    });
   }, []);
   return (
     <AuthContext.Provider value={{ currentUser: currentUser }}>
