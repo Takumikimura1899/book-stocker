@@ -84,7 +84,11 @@ export const firebaseCollectionData = async () => {
   return posts;
 };
 
-export const addFirebaseData = async (path: string, content: FormContents) => {
+export const addFirebaseData = async (
+  path: string,
+  content: FormContents,
+  user: string
+) => {
   if (content.image) {
     const imageUrl = content.title;
     const data = { ...content, image: imageUrl };
@@ -94,6 +98,8 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
     });
     const docRef = await addDoc(collection(db, path), data);
     console.log('Document written with ID:', docRef.id);
+    const newUserRef = doc(db, 'user', user);
+    await setDoc(newUserRef, { id: docRef.id });
   } else {
     console.log(content);
 
