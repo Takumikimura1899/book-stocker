@@ -16,7 +16,7 @@ const AddPage: NextPage = () => {
         <div className='text3xl font-bold underline text-indigo-500'>
           Hello World!
         </div>
-        <Form setImage={setImage} />
+        <Form />
         <button
           onClick={() => {
             const info = localStorage.getItem('info');
@@ -29,7 +29,7 @@ const AddPage: NextPage = () => {
         </button>
         <Link href='/contents/contents'>firebaseContents</Link>
         {showImage && (
-          <Image src={image!.preview} alt='iamge' width={100} height={100} />
+          <Image src={image!.preview} alt='image' width={100} height={100} />
         )}
       </div>
     </>

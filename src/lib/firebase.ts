@@ -114,3 +114,10 @@ export const getStorageImage = async (title: string) => {
     () => 'none'
   );
 };
+
+export const setUserContent = async (user: string, dataId: { id: string }) => {
+  const newContentIdRef = doc(collection(db, 'user', user));
+  await setDoc(newContentIdRef, dataId).catch(() => {
+    console.log('OK');
+  });
+};

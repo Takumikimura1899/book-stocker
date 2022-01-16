@@ -10,25 +10,10 @@ import { FormInputContentAtom } from './atoms/formAtom/FormContentAtom';
 import { FormSelectContentAtom } from './atoms/formAtom/FormSelectContentAtom';
 import { ImageDropDown } from './ImageDropDown';
 
-export const Form = ({ setImage }: any) => {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   control,
-  //   setValue,
-  //   formState: { errors },
-  // } = useForm<FormContents>();
+export const Form = () => {
   const methods = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (content) => {
     console.log(content);
-    // const imageUrl = content.title;
-    // const data = content.image
-    //   ? { ...content, image: { ...content.image, name: imageUrl } }
-    //   : content;
-    // console.log(data.image);
-
-    // setImage(content.image);
     addFirebaseData('bookInfo', content);
     firebaseCollectionId();
   };
