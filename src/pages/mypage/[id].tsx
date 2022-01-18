@@ -1,9 +1,13 @@
-import { GetStaticProps, NextPage } from 'next';
-import Image from 'next/image';
-import { Params } from 'next/dist/server/router';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { ParsedUrlQuery } from 'querystring';
+import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
+import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
+import { Layout } from '~/src/components/layout/Layout';
+import { Navbar } from '~/src/components/molecules/Navbar';
 
 import {
   firebaseCollectionId,
+  firebaseCollectionIdWhereUser,
   getFirebaseData,
   getStorageImage,
 } from '~/src/lib/firebase';
@@ -16,13 +20,11 @@ interface Props {
   results: Result[];
 }
 
-import React from 'react';
-import { Navbar } from '~/src/components/molecules/Navbar';
-import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
-import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
-import { Layout } from '~/src/components/layout/Layout';
+interface Params extends ParsedUrlQuery {
+  id: string;
+}
 
-const MyPage: NextPage<Props> = ({ results }) => {
+const userPage: NextPage<Props> = ({ results }) => {
   console.log(results);
 
   return (
@@ -50,8 +52,21 @@ const MyPage: NextPage<Props> = ({ results }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const ids = await firebaseCollectionId('bookInfo');
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
+  const ids = await firebaseCollectionId('user');
+
+  const paths = ids.map((id) => ({
+    params: { id },
+  }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+}) => {
+  const ids = await firebaseCollectionIdWhereUser(params!.id);
+
   const contents = ids.map(async (id) => {
     const content = await getFirebaseData('bookInfo', id);
     if (content.image) {
@@ -69,4 +84,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
-export default MyPage;
+export default userPage;

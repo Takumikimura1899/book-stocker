@@ -8,6 +8,9 @@ import {
   setDoc,
   addDoc,
   initializeFirestore,
+  DocumentData,
+  query,
+  where,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -61,9 +64,9 @@ export const getFirebaseCollection = async (path: string) => {
   return querySnapshot.docs[0].id;
 };
 
-export const firebaseCollectionId = async () => {
+export const firebaseCollectionId = async (collectionName: string) => {
   const posts: string[] = [];
-  const querySnapshot = await getDocs(collection(db, 'bookInfo'));
+  const querySnapshot = await getDocs(collection(db, collectionName));
 
   querySnapshot.forEach((doc) => {
     posts.push(doc.id);
@@ -72,12 +75,32 @@ export const firebaseCollectionId = async () => {
 
   return posts;
 };
-export const firebaseCollectionData = async () => {
+export const firebaseCollectionIdWhereUser = async (user: string) => {
   const posts: string[] = [];
-  const querySnapshot = await getDocs(collection(db, 'bookInfo'));
+
+  const q = query(collection(db, 'bookInfo'), where('created_by', '==', user));
+  const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {
     posts.push(doc.id);
+  });
+  console.log(posts);
+
+  return posts;
+};
+
+export const firebaseCollectionData = async (
+  collectionName: string,
+  user: string
+) => {
+  const posts: DocumentData[] = [];
+  const docRef = doc(db, collectionName, user);
+  const querySnapshot = await getDocs(
+    collection(db, collectionName, user, 'contentId')
+  );
+
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.data);
   });
   console.log(posts);
 
@@ -98,7 +121,7 @@ export const addFirebaseData = async (
     });
     const docRef = await addDoc(collection(db, path), data);
     console.log('Document written with ID:', docRef.id);
-    const newUserRef = doc(db, 'user', user);
+    const newUserRef = doc(db, 'user', user, 'contentId');
     await setDoc(newUserRef, { id: docRef.id });
   } else {
     console.log(content);

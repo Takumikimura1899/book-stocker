@@ -74,7 +74,7 @@ const mainPage: NextPage<Props> = ({ content }) => {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const ids = await firebaseCollectionId();
+  const ids = await firebaseCollectionId('bookInfo');
 
   const paths = ids.map((id) => ({
     params: { id },
