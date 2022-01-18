@@ -121,8 +121,6 @@ export const addFirebaseData = async (
     });
     const docRef = await addDoc(collection(db, path), data);
     console.log('Document written with ID:', docRef.id);
-    const newUserRef = doc(db, 'user', user, 'contentId');
-    await setDoc(newUserRef, { id: docRef.id });
   } else {
     console.log(content);
 

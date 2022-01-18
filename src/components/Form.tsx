@@ -18,7 +18,8 @@ export const Form = () => {
   const methods = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (content) => {
     console.log(content);
-    addFirebaseData('bookInfo', content, user.currentUser!.uid.toString());
+    const newContent = { ...content, created_by: user.currentUser?.uid };
+    addFirebaseData('bookInfo', newContent, user.currentUser!.uid.toString());
   };
 
   console.log(methods.watch('image'));
