@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
@@ -13,7 +13,6 @@ import {
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { useCollection } from 'react-firebase-hooks/firestore';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -32,14 +31,6 @@ export const firestoreApp = initializeFirestore(firebaseApp, {
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-// export const getFirebaseData = async (path: string) => {
-//   const pathCol = collection(db, path);
-//   const SnapShot = await getDocs(pathCol);
-//   const List = SnapShot.docs.map((doc) => doc.data());
-
-//   return List;
-// };
-
 export const getFirebaseData = async (path: string, id: string) => {
   const docRef = doc(db, path, id);
   const docSnap = await getDoc(docRef);
@@ -52,16 +43,6 @@ export const getFirebaseData = async (path: string, id: string) => {
     console.log('No such document!');
   }
   return data;
-};
-
-export const getFirebaseCollection = async (path: string) => {
-  const querySnapshot = await getDocs(collection(db, path));
-  querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-  });
-  console.log(querySnapshot.docs[0].id);
-
-  return querySnapshot.docs[0].id;
 };
 
 export const firebaseCollectionId = async (collectionName: string) => {
@@ -107,11 +88,7 @@ export const firebaseCollectionData = async (
   return posts;
 };
 
-export const addFirebaseData = async (
-  path: string,
-  content: FormContents,
-  user: string
-) => {
+export const addFirebaseData = async (path: string, content: FormContents) => {
   if (content.image) {
     const imageUrl = content.title;
     const data = { ...content, image: imageUrl };
@@ -127,24 +104,10 @@ export const addFirebaseData = async (
     const docRef = await addDoc(collection(db, path), content);
     console.log('Document written with ID:', docRef.id);
   }
-
-  // console.log(data);
 };
-
-// export const FireStoreCollection = (path:string) => {
-//   const [value] = useCollection(collection(db, 'bookInfo'));
-//   return value;
-// };
 
 export const getStorageImage = async (title: string) => {
   return await getDownloadURL(ref(storage, `images/${title}/file.jpg`)).catch(
     () => 'none'
   );
-};
-
-export const setUserContent = async (user: string, dataId: { id: string }) => {
-  const newContentIdRef = doc(collection(db, 'user', user));
-  await setDoc(newContentIdRef, dataId).catch(() => {
-    console.log('OK');
-  });
 };
