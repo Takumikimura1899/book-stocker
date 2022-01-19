@@ -5,7 +5,6 @@ import {
   getDoc,
   doc,
   getDocs,
-  setDoc,
   addDoc,
   initializeFirestore,
   DocumentData,
@@ -48,14 +47,12 @@ export const getFirebaseData = async (path: string, id: string) => {
 export const firebaseCollectionId = async (collectionName: string) => {
   const posts: string[] = [];
   const querySnapshot = await getDocs(collection(db, collectionName));
-
   querySnapshot.forEach((doc) => {
     posts.push(doc.id);
   });
-  console.log(posts);
-
   return posts;
 };
+
 export const firebaseCollectionIdWhereUser = async (user: string) => {
   const posts: string[] = [];
 
@@ -65,7 +62,6 @@ export const firebaseCollectionIdWhereUser = async (user: string) => {
   querySnapshot.forEach((doc) => {
     posts.push(doc.id);
   });
-  console.log(posts);
 
   return posts;
 };
@@ -75,7 +71,6 @@ export const firebaseCollectionData = async (
   user: string
 ) => {
   const posts: DocumentData[] = [];
-  const docRef = doc(db, collectionName, user);
   const querySnapshot = await getDocs(
     collection(db, collectionName, user, 'contentId')
   );
@@ -88,7 +83,7 @@ export const firebaseCollectionData = async (
   return posts;
 };
 
-export const addFirebaseData = async (path: string, content: FormContents) => {
+export const addFirebaseData = async (content: FormContents) => {
   if (content.image) {
     const imageUrl = content.title;
     const data = { ...content, image: imageUrl };
@@ -96,13 +91,9 @@ export const addFirebaseData = async (path: string, content: FormContents) => {
     uploadBytes(storageRef, content.image!).then((snapshot) => {
       console.log('Upload a blob or file!');
     });
-    const docRef = await addDoc(collection(db, path), data);
-    console.log('Document written with ID:', docRef.id);
+    await addDoc(collection(db, 'bookInfo'), data);
   } else {
-    console.log(content);
-
-    const docRef = await addDoc(collection(db, path), content);
-    console.log('Document written with ID:', docRef.id);
+    await addDoc(collection(db, 'bookInfo'), content);
   }
 };
 

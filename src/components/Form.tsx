@@ -19,7 +19,7 @@ export const Form = () => {
   const onSubmit: SubmitHandler<FormContents> = (content) => {
     console.log(content);
     const newContent = { ...content, created_by: user.currentUser?.uid };
-    addFirebaseData('bookInfo', newContent, user.currentUser!.uid.toString());
+    addFirebaseData(newContent);
   };
 
   console.log(methods.watch('image'));
