@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
