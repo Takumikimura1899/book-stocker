@@ -32,16 +32,21 @@ const userPage: NextPage<Props> = ({ results }) => {
         {results.map((result, index) => {
           const { image } = result;
           return (
-            <div key={index} className='flex items-center justify-around py-8'>
+            <div
+              key={index}
+              className='flex justify-center md:justify-around items-center  py-8'
+            >
               <MyPageContentImageAtom
                 title={result.title}
                 image={image}
                 id={result.id}
               />
-              <MyPageContentAtom>{result.genre}</MyPageContentAtom>
-              <MyPageContentAtom>{result.author}</MyPageContentAtom>
-              <MyPageContentAtom>{result.page}</MyPageContentAtom>
-              <MyPageContentAtom>{result.status}</MyPageContentAtom>
+              <div className='hidden md:flex w-4/5 justify-around'>
+                <MyPageContentAtom>{result.genre}</MyPageContentAtom>
+                <MyPageContentAtom>{result.author}</MyPageContentAtom>
+                <MyPageContentAtom>{result.page}</MyPageContentAtom>
+                <MyPageContentAtom>{result.status}</MyPageContentAtom>
+              </div>
             </div>
           );
         })}

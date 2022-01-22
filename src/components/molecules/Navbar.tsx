@@ -5,7 +5,7 @@ export const Navbar = () => {
   return (
     <>
       {/* <nav className='hidden lg:flex gap-12'> */}
-      <nav className=' flex justify-around'>
+      <nav className='hidden  md:flex md:justify-around'>
         <NavbarContentAtom value='Title' />
         <NavbarContentAtom value='Genre' />
         <NavbarContentAtom value='Author' />
