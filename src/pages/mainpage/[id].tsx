@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
@@ -23,15 +24,15 @@ const mainPage: NextPage<Props> = ({ content }) => {
   return (
     <>
       <Layout>
-        <div className='grid grid-cols-3 grid-rows-5 h-screen font-bold text-xl '>
+        <div className='flex flex-col justify-center md:grid md:grid-cols-3 md:grid-rows-5 h-screen font-bold text-xl '>
           <MainPageContentAtom
             title='タイトル:'
             value={title}
-            className='col-span-3 text-5xl'
+            className='md:col-span-3 md:text-5xl'
           />
           <MainPageContentImageAtom
             image={image}
-            className='row-span-2 row-start-2'
+            className='w-32 mx-auto md:row-span-2 md:row-start-2'
           />
           <MainPageContentAtom
             title='ジャンル:'
