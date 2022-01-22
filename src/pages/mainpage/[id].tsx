@@ -32,7 +32,7 @@ const mainPage: NextPage<Props> = ({ content }) => {
           />
           <MainPageContentImageAtom
             image={image}
-            className='w-32 mx-auto md:row-span-2 md:row-start-2'
+            className='w-32 md:w-48 mx-auto md:row-span-2 md:row-start-2'
           />
           <MainPageContentAtom
             title='ジャンル:'
