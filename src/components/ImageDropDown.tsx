@@ -41,31 +41,13 @@ export const ImageDropDown = ({
   setValue: any;
 }) => {
   const [files, setFiles] = useState<MyFile[]>([]);
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
-  //   // accept: 'image/*',
-  //   onDrop: (acceptedFiles) => {
-  //     setFiles(
-  //       acceptedFiles.map((file) =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file),
-  //         })
-  //       )
-  //     );
-  //   },
-  // });
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       // Do something with the files
       console.log({ acceptedFiles });
       const acceptedFile = acceptedFiles[0];
-      // console.log(acceptedFiles[0]);
-      // const reader = new FileReader();
-      // reader.readAsDataURL(acceptedFile);
-      // reader.onload = () => {
-      //   const binaryStr = reader.result;
-      //   console.log(binaryStr);
-      //   setValue('image', binaryStr);
-      // };
+
       setValue('image', acceptedFile);
 
       setFiles(
@@ -83,18 +65,10 @@ export const ImageDropDown = ({
   const thumbs = files.map((file) => (
     <div className='p-2 ' key={file.name}>
       <div>
-        <Image src={file.preview} alt='iamge' width={150} height={150} />
+        <Image src={file.preview} alt='image' width={150} height={150} />
       </div>
     </div>
   ));
-
-  // useEffect(
-  //   () => () => {
-  //     // Make sure to revoke the data uris to avoid memory leaks
-  //     files.forEach((file) => URL.revokeObjectURL(file.preview));
-  //   },
-  //   [files]
-  // );
 
   return (
     <section className=''>
