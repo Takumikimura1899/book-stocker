@@ -21,6 +21,7 @@ import { Navbar } from '~/src/components/molecules/Navbar';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
+import { getStorage } from 'firebase/storage';
 
 const MyPage: NextPage<Props> = ({ results }) => {
   console.log(results);
@@ -54,11 +55,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const ids = await firebaseCollectionId('bookInfo');
   const contents = ids.map(async (id) => {
     const content = await getFirebaseData('bookInfo', id);
-    if (content.image) {
-      const image = await getStorageImage(content.title);
-      return { ...content, image, id };
-    }
-    return { ...content, id };
+
+    const image = content.image
+      ? await getStorageImage(content.title)
+      : await getStorageImage('none');
+    return { ...content, image, id };
   });
 
   const results = await Promise.all(contents);

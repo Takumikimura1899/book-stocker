@@ -25,8 +25,6 @@ interface Params extends ParsedUrlQuery {
 }
 
 const userPage: NextPage<Props> = ({ results }) => {
-  console.log(results);
-
   return (
     <>
       <Layout>
@@ -65,15 +63,14 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const ids = await firebaseCollectionIdWhereUser(params!.id);
+  const filteredContents = await firebaseCollectionIdWhereUser(params!.id);
 
-  const contents = ids.map(async (id) => {
+  const contents = filteredContents.map(async (id) => {
     const content = await getFirebaseData('bookInfo', id);
-    if (content.image) {
-      const image = await getStorageImage(content.title);
-      return { ...content, image, id };
-    }
-    return { ...content, id };
+    const image = content.image
+      ? await getStorageImage(content.title)
+      : await getStorageImage('none');
+    return { ...content, image, id };
   });
 
   const results = await Promise.all(contents);
