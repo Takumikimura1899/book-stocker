@@ -1,11 +1,13 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { MouseEventHandler } from 'react';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
 import { Navbar } from '~/src/components/molecules/Navbar';
 
 import {
+  deleteFirebaseData,
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getFirebaseData,
@@ -25,6 +27,9 @@ interface Params extends ParsedUrlQuery {
 }
 
 const userPage: NextPage<Props> = ({ results }) => {
+  const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
+    deleteFirebaseData(e.currentTarget.id);
+  };
   return (
     <>
       <Layout>
@@ -47,6 +52,12 @@ const userPage: NextPage<Props> = ({ results }) => {
                 <MyPageContentAtom>{result.page}</MyPageContentAtom>
                 <MyPageContentAtom>{result.status}</MyPageContentAtom>
               </div>
+              <button onClick={() => deleteFirebaseData(result.id)}>
+                削除
+              </button>
+              <button onClick={handleDelete} id={result.id}>
+                event削除
+              </button>
             </div>
           );
         })}

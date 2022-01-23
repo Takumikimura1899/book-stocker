@@ -10,6 +10,7 @@ import {
   DocumentData,
   query,
   where,
+  deleteDoc,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
@@ -101,4 +102,8 @@ export const getStorageImage = async (title: string) => {
   return await getDownloadURL(ref(storage, `images/${title}/file.jpg`)).catch(
     () => 'none'
   );
+};
+
+export const deleteFirebaseData = async (id: string) => {
+  await deleteDoc(doc(db, 'bookInfo', id));
 };
