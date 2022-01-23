@@ -12,7 +12,13 @@ import {
   where,
   deleteDoc,
 } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -84,11 +90,11 @@ export const firebaseCollectionData = async (
   return posts;
 };
 
-export const addFirebaseData = async (content: FormContents) => {
+export const addFirebaseData = async (content: FormContents, uid: string) => {
   if (content.image) {
     const imageUrl = content.title;
     const data = { ...content, image: imageUrl };
-    const storageRef = ref(storage, `images/${imageUrl}/file.jpg`);
+    const storageRef = ref(storage, `images/${uid}/${imageUrl}/file.jpg`);
     uploadBytes(storageRef, content.image!).then((snapshot) => {
       console.log('Upload a blob or file!');
     });
@@ -98,12 +104,17 @@ export const addFirebaseData = async (content: FormContents) => {
   }
 };
 
-export const getStorageImage = async (title: string) => {
-  return await getDownloadURL(ref(storage, `images/${title}/file.jpg`)).catch(
-    () => 'none'
-  );
+export const getStorageImage = async (uid: string, title: string) => {
+  return await getDownloadURL(
+    ref(storage, `images/${uid}/${title}/file.jpg`)
+  ).catch(() => 'none');
 };
 
-export const deleteFirebaseData = async (id: string) => {
+export const deleteFirebaseData = async (
+  id: string,
+  title: string,
+  uid: string
+) => {
   await deleteDoc(doc(db, 'bookInfo', id));
+  await deleteObject(ref(storage, `images/${uid}/${title}/file.jpg`));
 };

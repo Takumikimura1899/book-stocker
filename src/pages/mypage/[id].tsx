@@ -16,6 +16,7 @@ import {
 
 interface Result extends Content {
   id: string;
+  uid: string;
 }
 
 interface Props {
@@ -28,7 +29,11 @@ interface Params extends ParsedUrlQuery {
 
 const userPage: NextPage<Props> = ({ results }) => {
   const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
-    deleteFirebaseData(e.currentTarget.id);
+    deleteFirebaseData(
+      e.currentTarget.id,
+      e.currentTarget.title,
+      e.currentTarget.dataset.uid!
+    );
   };
   return (
     <>
@@ -52,10 +57,12 @@ const userPage: NextPage<Props> = ({ results }) => {
                 <MyPageContentAtom>{result.page}</MyPageContentAtom>
                 <MyPageContentAtom>{result.status}</MyPageContentAtom>
               </div>
-              <button onClick={() => deleteFirebaseData(result.id)}>
-                削除
-              </button>
-              <button onClick={handleDelete} id={result.id}>
+              <button
+                onClick={handleDelete}
+                id={result.id}
+                data-set={result.uid}
+                title={result.title}
+              >
                 event削除
               </button>
             </div>
@@ -79,14 +86,15 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const filteredContents = await firebaseCollectionIdWhereUser(params!.id);
+  const uid = params!.id;
+  const filteredContents = await firebaseCollectionIdWhereUser(uid);
 
   const contents = filteredContents.map(async (id) => {
     const content = await getFirebaseData('bookInfo', id);
     const image = content.image
-      ? await getStorageImage(content.title)
-      : await getStorageImage('none');
-    return { ...content, image, id };
+      ? await getStorageImage(uid, content.title)
+      : await getStorageImage(uid, 'none');
+    return { ...content, image, id, uid };
   });
 
   const results = await Promise.all(contents);

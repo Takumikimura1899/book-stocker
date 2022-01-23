@@ -57,8 +57,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     const content = await getFirebaseData('bookInfo', id);
 
     const image = content.image
-      ? await getStorageImage(content.title)
-      : await getStorageImage('none');
+      ? await getStorageImage('WAzfBUCft58yWkwUoqNz', content.title)
+      : await getStorageImage('WAzfBUCft58yWkwUoqNz', 'none');
     return { ...content, image, id };
   });
 
