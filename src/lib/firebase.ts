@@ -17,6 +17,7 @@ import {
   getDownloadURL,
   getStorage,
   ref,
+  StorageReference,
   uploadBytes,
 } from 'firebase/storage';
 
@@ -105,9 +106,12 @@ export const addFirebaseData = async (content: FormContents, uid: string) => {
 };
 
 export const getStorageImage = async (uid: string, title: string) => {
-  return await getDownloadURL(
-    ref(storage, `images/${uid}/${title}/file.jpg`)
-  ).catch(() => 'none');
+  let storageRef: StorageReference;
+
+  title === 'none'
+    ? (storageRef = ref(storage, `images/none/file.jpg`))
+    : (storageRef = ref(storage, `images/${uid}/${title}/file.jpg`));
+  return await getDownloadURL(ref(storageRef)).catch(() => 'none');
 };
 
 export const deleteFirebaseData = async (
