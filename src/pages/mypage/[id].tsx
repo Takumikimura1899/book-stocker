@@ -32,7 +32,7 @@ const userPage: NextPage<Props> = ({ results }) => {
     deleteFirebaseData(
       e.currentTarget.id,
       e.currentTarget.title,
-      e.currentTarget.dataset.uid!
+      e.currentTarget.dataset.uid!,
     );
   };
   return (
@@ -60,7 +60,7 @@ const userPage: NextPage<Props> = ({ results }) => {
               <button
                 onClick={handleDelete}
                 id={result.id}
-                data-set={result.uid}
+                data-uid={result.created_by}
                 title={result.title}
               >
                 event削除

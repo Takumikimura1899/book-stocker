@@ -76,11 +76,11 @@ export const firebaseCollectionIdWhereUser = async (user: string) => {
 
 export const firebaseCollectionData = async (
   collectionName: string,
-  user: string
+  user: string,
 ) => {
   const posts: DocumentData[] = [];
   const querySnapshot = await getDocs(
-    collection(db, collectionName, user, 'contentId')
+    collection(db, collectionName, user, 'contentId'),
   );
 
   querySnapshot.forEach((doc) => {
@@ -93,7 +93,7 @@ export const firebaseCollectionData = async (
 
 export const addFirebaseData = async (content: FormContents, uid: string) => {
   if (content.image) {
-    const imageUrl = content.title;
+    const imageUrl = encodeURIComponent(content.title);
     const data = { ...content, image: imageUrl };
     const storageRef = ref(storage, `images/${uid}/${imageUrl}/file.jpg`);
     uploadBytes(storageRef, content.image!).then((snapshot) => {
@@ -107,18 +107,26 @@ export const addFirebaseData = async (content: FormContents, uid: string) => {
 
 export const getStorageImage = async (uid: string, title: string) => {
   let storageRef: StorageReference;
+  const encodedTitle = encodeURIComponent(title);
 
   title === 'none'
     ? (storageRef = ref(storage, `images/none/file.jpg`))
-    : (storageRef = ref(storage, `images/${uid}/${title}/file.jpg`));
+    : (storageRef = ref(storage, `images/${uid}/${encodedTitle}/file.jpg`));
   return await getDownloadURL(ref(storageRef)).catch(() => 'none');
 };
 
 export const deleteFirebaseData = async (
   id: string,
   title: string,
-  uid: string
+  uid: string,
 ) => {
+  const encodedTitle = encodeURIComponent(title);
+
+  const docSnap = await getDoc(doc(db, 'bookInfo', id));
+
   await deleteDoc(doc(db, 'bookInfo', id));
-  await deleteObject(ref(storage, `images/${uid}/${title}/file.jpg`));
+  docSnap.data()!.image &&
+    (await deleteObject(
+      ref(storage, `images/${uid}/${encodedTitle}/file.jpg`),
+    ));
 };
