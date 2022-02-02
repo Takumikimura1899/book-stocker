@@ -91,7 +91,7 @@ export const firebaseCollectionData = async (
   return posts;
 };
 
-export const addFirebaseData = async (content: FormContents, uid: string) => {
+export const addFirebaseData = async (content: FormContents, uid?: string) => {
   if (content.image) {
     const imageUrl = encodeURIComponent(content.title);
     const data = { ...content, image: imageUrl };

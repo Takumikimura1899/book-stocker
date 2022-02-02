@@ -15,7 +15,7 @@ import { ImageDropDown } from './ImageDropDown';
 export const Form = () => {
   const user = useContext(AuthContext);
   console.log(user.currentUser?.uid);
-  const uid = user.currentUser!.uid;
+  const uid = user.currentUser?.uid;
   const methods = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (content) => {
     console.log(content);
