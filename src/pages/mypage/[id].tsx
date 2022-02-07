@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { MouseEventHandler } from 'react';
+import useSWR from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
@@ -27,7 +28,15 @@ interface Params extends ParsedUrlQuery {
   id: string;
 }
 
-const userPage: NextPage<Props> = ({ results }) => {
+function sleep(msec: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, msec);
+  });
+}
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const UserPage: NextPage<Props> = ({ results }) => {
   const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
     deleteFirebaseData(
       e.currentTarget.id,
@@ -35,10 +44,17 @@ const userPage: NextPage<Props> = ({ results }) => {
       e.currentTarget.dataset.uid!,
     );
   };
+  const { data, error } = useSWR(
+    `https://api.github.com/repos/vercel/swr`,
+    fetcher,
+  );
+  if (error) return <div>An error has occurred.</div>;
+  if (!data) return <div>Loading...</div>;
   return (
     <>
       <Layout>
         <Navbar />
+        <h1>{data.name}</h1>
         {results.map((result, index) => {
           const { image } = result;
           return (
@@ -106,4 +122,4 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   };
 };
 
-export default userPage;
+export default UserPage;

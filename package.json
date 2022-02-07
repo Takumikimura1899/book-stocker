@@ -16,7 +16,8 @@
     "react-dropzone": "^11.4.2",
     "react-firebase-hooks": "^4.0.1",
     "react-hook-form": "^7.22.2",
-    "react-select": "^5.2.1"
+    "react-select": "^5.2.1",
+    "swr": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "17.0.0",
