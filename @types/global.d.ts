@@ -10,6 +10,7 @@ type FormContents = {
 type BookGenre = 'マンガ' | '雑誌' | 'ビジネス' | '文学' | 'IT' | '趣味';
 
 type Content = {
+  id?: string;
   created_by?: string;
   image?: string;
   title: string;

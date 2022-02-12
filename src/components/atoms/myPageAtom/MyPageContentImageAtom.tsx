@@ -5,7 +5,7 @@ import React from 'react';
 interface Props {
   image?: string;
   title: string;
-  id: string;
+  id?: string;
 }
 
 export const MyPageContentImageAtom: React.FC<Props> = ({

@@ -41,12 +41,14 @@ export const storage = getStorage(firebaseApp);
 
 export const docRef = collection(db, 'bookInfo');
 
-export const fetchBookInfo = async (url: string) => {
+export const fetchBookInfo: (id: string) => Promise<Content[]> = async (
+  url: string,
+) => {
   const docRef = collection(db, url);
-  const docSnap = await getDocs(docRef);
+  const docSnap = (await getDocs(docRef)) as unknown;
   console.log(docSnap);
 
-  const data = docSnap;
+  const data = docSnap as Content[];
 
   // if (docSnap.exists()) {
   //   console.log('Document data:', docSnap.data());
@@ -54,6 +56,22 @@ export const fetchBookInfo = async (url: string) => {
   //   console.log('No such document!');
   // }
   return data;
+};
+
+export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
+  const uid = id;
+  const filteredContents = await firebaseCollectionIdWhereUser(uid);
+
+  const contents = filteredContents.map(async (id) => {
+    const content = await getFirebaseData('bookInfo', id);
+    const image = content.image
+      ? await getStorageImage(uid, content.title)
+      : await getStorageImage(uid, 'none');
+    return { ...content, image, id, uid };
+  });
+
+  const results = await Promise.all(contents);
+  return results;
 };
 
 export const getFirebaseData = async (path: string, id: string) => {

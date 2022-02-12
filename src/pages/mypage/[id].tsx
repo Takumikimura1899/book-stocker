@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler, useContext } from 'react';
+import { MouseEventHandler, useContext, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
@@ -12,6 +12,7 @@ import {
   deleteFirebaseData,
   docRef,
   fetchBookInfo,
+  fetchByUser,
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getFirebaseData,
@@ -57,11 +58,21 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
   console.log(uid);
 
   const initialData = results;
-  const { mutate } = useSWRConfig();
 
-  const { data, error } = useSWR('bookInfo', fetchBookInfo);
+  const {
+    data: result,
+    error,
+    mutate,
+  } = useSWR(uid, fetchByUser, {
+    fallbackData: results,
+  });
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
   if (error) return <div>An error has occurred.</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!result) return <div>Loading...</div>;
   return (
     <>
       <Layout>
@@ -75,7 +86,7 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
           更新
         </button> */}
         {/* <h1></h1> */}
-        {results.map((result, index) => {
+        {result.map((result, index) => {
           const { image } = result;
           return (
             <div
@@ -85,7 +96,7 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
               <MyPageContentImageAtom
                 title={result.title}
                 image={image}
-                id={result.id}
+                // id={result.id!}
               />
               <div className='hidden md:flex w-4/5 justify-around'>
                 <MyPageContentAtom>{result.genre}</MyPageContentAtom>
@@ -95,7 +106,7 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
               </div>
               <button
                 onClick={handleDelete}
-                id={result.id}
+                // id={result.id}
                 data-uid={result.created_by}
                 title={result.title}
               >
@@ -116,7 +127,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     params: { id },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: 'blocking' };
 };
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
