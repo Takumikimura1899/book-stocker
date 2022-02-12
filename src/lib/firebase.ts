@@ -11,6 +11,7 @@ import {
   query,
   where,
   deleteDoc,
+  CollectionReference,
 } from 'firebase/firestore';
 import {
   deleteObject,
@@ -37,6 +38,23 @@ export const firestoreApp = initializeFirestore(firebaseApp, {
 });
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
+
+export const docRef = collection(db, 'bookInfo');
+
+export const fetchBookInfo = async (url: string) => {
+  const docRef = collection(db, url);
+  const docSnap = await getDocs(docRef);
+  console.log(docSnap);
+
+  const data = docSnap;
+
+  // if (docSnap.exists()) {
+  //   console.log('Document data:', docSnap.data());
+  // } else {
+  //   console.log('No such document!');
+  // }
+  return data;
+};
 
 export const getFirebaseData = async (path: string, id: string) => {
   const docRef = doc(db, path, id);

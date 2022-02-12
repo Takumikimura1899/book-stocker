@@ -1,14 +1,17 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler } from 'react';
-import useSWR from 'swr';
+import { MouseEventHandler, useContext } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
 import { Navbar } from '~/src/components/molecules/Navbar';
+import { AuthContext } from '~/src/context/AuthContextProvider';
 
 import {
   deleteFirebaseData,
+  docRef,
+  fetchBookInfo,
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getFirebaseData,
@@ -22,6 +25,7 @@ interface Result extends Content {
 
 interface Props {
   results: Result[];
+  uid: string;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -34,9 +38,13 @@ function sleep(msec: number) {
   });
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url).then(async (res) => {
+    await sleep(5000);
+    return res.json();
+  });
 
-const UserPage: NextPage<Props> = ({ results }) => {
+const UserPage: NextPage<Props> = ({ results, uid }) => {
   const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
     deleteFirebaseData(
       e.currentTarget.id,
@@ -44,17 +52,29 @@ const UserPage: NextPage<Props> = ({ results }) => {
       e.currentTarget.dataset.uid!,
     );
   };
-  const { data, error } = useSWR(
-    `https://api.github.com/repos/vercel/swr`,
-    fetcher,
-  );
+  const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
+  console.log(uid);
+
+  const initialData = results;
+  const { mutate } = useSWRConfig();
+
+  const { data, error } = useSWR('bookInfo', fetchBookInfo);
   if (error) return <div>An error has occurred.</div>;
   if (!data) return <div>Loading...</div>;
   return (
     <>
       <Layout>
         <Navbar />
-        <h1>{data.name}</h1>
+        {/* <button
+          onClick={async () => {
+            await mutate(docRef);
+            console.log('完了');
+          }}
+        >
+          更新
+        </button> */}
+        {/* <h1></h1> */}
         {results.map((result, index) => {
           const { image } = result;
           return (
@@ -117,6 +137,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   return {
     props: {
       results,
+      uid,
     },
     revalidate: 3,
   };
