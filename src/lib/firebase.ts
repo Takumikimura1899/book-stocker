@@ -134,7 +134,10 @@ export const addFirebaseData: (
   }
 };
 
-export const getStorageImage = async (uid: string, title: string) => {
+export const getStorageImage: (
+  uid: string,
+  title: string,
+) => Promise<string> = async (uid, title) => {
   let storageRef: StorageReference;
   const encodedTitle = encodeURIComponent(title);
 
