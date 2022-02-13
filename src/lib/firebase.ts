@@ -102,7 +102,9 @@ export const firebaseCollectionId: (
   return posts;
 };
 
-export const firebaseCollectionIdWhereUser = async (user: string) => {
+export const firebaseCollectionIdWhereUser: (
+  user: string,
+) => Promise<string[]> = async (user) => {
   const posts: string[] = [];
 
   const q = query(collection(db, 'bookInfo'), where('created_by', '==', user));
