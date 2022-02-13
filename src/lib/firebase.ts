@@ -121,7 +121,7 @@ export const addFirebaseData: (
   content: FormContents,
   uid?: string,
 ) => Promise<void> = async (content, uid?) => {
-  const userRef = collection(db, 'user', uid!, 'content');
+  const userRef = collection(db, 'user', uid!, 'bookInfo');
   if (content.image) {
     const imageUrl = encodeURIComponent(content.title);
     const data = { ...content, image: imageUrl };
@@ -155,10 +155,10 @@ export const deleteFirebaseData: (
   uid: string,
 ) => Promise<void> = async (id, title, uid) => {
   const encodedTitle = encodeURIComponent(title);
+  const docRef = doc(db, 'user', uid, 'bookInfo', id);
+  const docSnap = await getDoc(docRef);
 
-  const docSnap = await getDoc(doc(db, 'bookInfo', id));
-
-  await deleteDoc(doc(db, 'bookInfo', id));
+  await deleteDoc(docRef);
   docSnap.data()!.image &&
     (await deleteObject(
       ref(storage, `images/${uid}/${encodedTitle}/file.jpg`),
