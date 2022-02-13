@@ -117,7 +117,10 @@ export const firebaseCollectionIdWhereUser: (
   return posts;
 };
 
-export const addFirebaseData = async (content: FormContents, uid?: string) => {
+export const addFirebaseData: (
+  content: FormContents,
+  uid?: string,
+) => Promise<void> = async (content, uid?) => {
   if (content.image) {
     const imageUrl = encodeURIComponent(content.title);
     const data = { ...content, image: imageUrl };
