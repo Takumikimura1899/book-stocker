@@ -121,6 +121,7 @@ export const addFirebaseData: (
   content: FormContents,
   uid?: string,
 ) => Promise<void> = async (content, uid?) => {
+  const userRef = collection(db, 'user', uid!, 'content');
   if (content.image) {
     const imageUrl = encodeURIComponent(content.title);
     const data = { ...content, image: imageUrl };
@@ -128,9 +129,10 @@ export const addFirebaseData: (
     uploadBytes(storageRef, content.image!).then((snapshot) => {
       console.log('Upload a blob or file!');
     });
-    await addDoc(collection(db, 'bookInfo'), data);
+
+    await addDoc(userRef, data);
   } else {
-    await addDoc(collection(db, 'bookInfo'), content);
+    await addDoc(userRef, content);
   }
 };
 
