@@ -74,7 +74,10 @@ export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
   return results;
 };
 
-export const getFirebaseData = async (path: string, id: string) => {
+export const getFirebaseData: (
+  path: string,
+  id: string,
+) => Promise<Content> = async (path, id) => {
   const docRef = doc(db, path, id);
   const docSnap = await getDoc(docRef);
 
