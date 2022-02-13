@@ -75,10 +75,10 @@ export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
 };
 
 export const getFirebaseData: (
-  path: string,
+  uid: string,
   id: string,
-) => Promise<Content> = async (path, id) => {
-  const docRef = doc(db, path, id);
+) => Promise<Content> = async (uid, id) => {
+  const docRef = doc(db, 'user', uid, 'bookInfo', id);
   const docSnap = await getDoc(docRef);
 
   // asを使用しているのでwithConverterで型付けしたい。
