@@ -117,23 +117,6 @@ export const firebaseCollectionIdWhereUser: (
   return posts;
 };
 
-export const firebaseCollectionData = async (
-  collectionName: string,
-  user: string,
-) => {
-  const posts: DocumentData[] = [];
-  const querySnapshot = await getDocs(
-    collection(db, collectionName, user, 'contentId'),
-  );
-
-  querySnapshot.forEach((doc) => {
-    posts.push(doc.data);
-  });
-  console.log(posts);
-
-  return posts;
-};
-
 export const addFirebaseData = async (content: FormContents, uid?: string) => {
   if (content.image) {
     const imageUrl = encodeURIComponent(content.title);
