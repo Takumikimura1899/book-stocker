@@ -147,11 +147,11 @@ export const getStorageImage: (
   return await getDownloadURL(ref(storageRef)).catch(() => 'none');
 };
 
-export const deleteFirebaseData = async (
+export const deleteFirebaseData: (
   id: string,
   title: string,
   uid: string,
-) => {
+) => Promise<void> = async (id, title, uid) => {
   const encodedTitle = encodeURIComponent(title);
 
   const docSnap = await getDoc(doc(db, 'bookInfo', id));
