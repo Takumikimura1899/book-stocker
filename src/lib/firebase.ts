@@ -101,6 +101,20 @@ export const firebaseCollectionId: (
   });
   return posts;
 };
+// export const firebaseCollectionIdContent: (
+//   collectionName: string,
+// ) => Promise<{uid:string,id:string[]}[]> = async (collectionName) => {
+//   const params: {uid:string,id:string[]} = {uid:"",id:[]};
+//   const querySnapshot = await getDocs(collection(db, collectionName));
+//   querySnapshot.forEach(async(doc) => {
+//     params.uid.push(doc.id);
+//     const querySnapshot = await getDocs(collection(db,"user",doc.id,"content"));
+//     querySnapshot.forEach((doc) => {
+//       params.id.push(doc.id)
+//     })
+//   });
+//   return params;
+// };
 
 export const firebaseCollectionIdWhereUser: (
   user: string,
