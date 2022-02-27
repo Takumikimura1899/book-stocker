@@ -34,11 +34,11 @@ const MyPage: NextPage<Props> = ({ results }) => {
           const { image } = result;
           return (
             <div key={index} className='flex items-center justify-around py-8'>
-              <MyPageContentImageAtom
+              {/* <MyPageContentImageAtom
                 title={result.title}
                 image={image}
                 id={result.id}
-              />
+              /> */}
               <MyPageContentAtom>{result.genre}</MyPageContentAtom>
               <MyPageContentAtom>{result.author}</MyPageContentAtom>
               <MyPageContentAtom>{result.page}</MyPageContentAtom>

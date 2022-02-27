@@ -6,15 +6,15 @@ interface Props {
   image?: string;
   title: string;
   id?: string;
+  onClick: () => Promise<boolean>;
 }
 
 export const MyPageContentImageAtom: React.FC<Props> = ({
   image,
   title,
   id,
+  onClick,
 }) => {
-  const router = useRouter();
-  const onClick = () => router.push(`/mainpage/${id}`);
   return (
     <div onClick={onClick} className='w-1/5 text-center'>
       <p>{title}</p>

@@ -158,8 +158,9 @@
 // export default UserPage;
 
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler, useContext, useEffect } from 'react';
+import { MouseEventHandler, useCallback, useContext, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
@@ -215,6 +216,13 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
       e.currentTarget.dataset.uid!,
     );
   };
+  const router = useRouter();
+
+  const onClick = useCallback(
+    async (contentId: string) =>
+      await router.push(`/users/${uid}/mypage/${contentId}`),
+    [],
+  );
   const { currentUser } = useContext(AuthContext);
 
   // const initialData = results;
@@ -249,6 +257,7 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
         {results.map((result, index) => {
           const { image } = result;
           console.log(image);
+          console.log(result.id);
 
           return (
             <div
@@ -259,6 +268,7 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
                 title={result.title}
                 image={image}
                 // id={result.id!}
+                onClick={() => onClick(result.id!)}
               />
               <div className='hidden md:flex w-4/5 justify-around'>
                 <MyPageContentAtom>{result.genre}</MyPageContentAtom>

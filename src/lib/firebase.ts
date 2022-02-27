@@ -191,7 +191,7 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
   // asを使用しているのでwithConverterで型付けしたい。
   const data = docSnap.data() as Content;
   const imageUrl = await getStorageImage(uid, data.image);
-  const newData = { ...data, image: imageUrl };
+  const newData = { ...data, image: imageUrl, id };
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());
   } else {
