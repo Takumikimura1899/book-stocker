@@ -17,7 +17,7 @@ export const Header: React.FC<Props> = ({ currentUser }) => {
   };
 
   const myPage = () => {
-    router.push(`/mypage/${currentUser!.uid}`);
+    router.push(`/users/${currentUser!.uid}/mypage`);
   };
 
   const addPage = () => {

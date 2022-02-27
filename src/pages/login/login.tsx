@@ -9,7 +9,7 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    currentUser && router.push(`/mypage/${currentUser.uid}`);
+    currentUser && router.push(`/users/${currentUser.uid}/mypage`);
   }, [currentUser, router]);
   return (
     <Layout>
