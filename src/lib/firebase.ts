@@ -101,20 +101,6 @@ export const firebaseCollectionId: (
   });
   return posts;
 };
-// export const firebaseCollectionIdContent: (
-//   collectionName: string,
-// ) => Promise<{uid:string,id:string[]}[]> = async (collectionName) => {
-//   const params: {uid:string,id:string[]} = {uid:"",id:[]};
-//   const querySnapshot = await getDocs(collection(db, collectionName));
-//   querySnapshot.forEach(async(doc) => {
-//     params.uid.push(doc.id);
-//     const querySnapshot = await getDocs(collection(db,"user",doc.id,"content"));
-//     querySnapshot.forEach((doc) => {
-//       params.id.push(doc.id)
-//     })
-//   });
-//   return params;
-// };
 
 export const firebaseCollectionIdWhereUser: (
   user: string,
@@ -179,32 +165,6 @@ export const deleteFirebaseData: (
     ));
 };
 
-// export const getAllDocIds: (collectionName: string) => string[] = (
-//   collectionName,
-// ) => {
-//   const posts: string[] = [];
-//   const ref = collection(db, collectionName);
-//   async () => {
-//     const querySnapshot = await getDocs(ref);
-//     querySnapshot.forEach((doc) => {
-//       posts.push(doc.id);
-//     });
-//   };
-//   return posts;
-// };
-
-// export const getAllDocIds: (
-//   collectionName: string,
-// ) => Promise<string[]> = async (collectionName) => {
-//   const ref = collection(db, collectionName);
-//   const posts: string[] = [];
-//   const querySnapshot = await getDocs(ref);
-//   querySnapshot.forEach((doc) => {
-//     posts.push(doc.id);
-//   });
-//   return posts;
-// };
-
 export const staticGenerateContentIds: (
   docRefs: string[],
 ) => { uid: string; contentId: string }[] = (docRefs) => {
@@ -217,7 +177,6 @@ export const staticGenerateContentIds: (
         contentId,
       });
     });
-    // return newArray;
   });
   return array;
 };
@@ -240,21 +199,6 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
   }
   return newData;
 };
-// export const staticGenerateContentIds: (
-//   docRefs: string[],
-// ) => Promise<{ uid: string; contentId: string }[]>[] = (docRefs) => {
-//   const aryy = docRefs.map(async (docRef) => {
-//     const allContentDocIds = await getAllDocIds(docRef);
-//     const newArray = allContentDocIds.map((contentId) => {
-//       return {
-//         uid: docRef,
-//         contentId,
-//       };
-//     });
-//     return newArray;
-//   });
-//   return aryy;
-// };
 
 export const getAllDocIds: (
   collectionName: string,
