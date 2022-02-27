@@ -284,7 +284,7 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const ids = getAllDocIds('user');
+  const ids = await getAllDocIds('user');
 
   const paths = ids.map((uid) => ({
     params: { uid },
@@ -297,8 +297,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   const uid = params!.uid;
-  // const filteredContents = getAllDocIds(`user/${uid}/bookInfo`);
-  const filteredContents = await getAllDocIdsUser(`user/${uid}/bookInfo`);
+  const filteredContents = await getAllDocIds(`user/${uid}/bookInfo`);
+  // const filteredContents = await getAllDocIdsUser(`user/${uid}/bookInfo`);
 
   const contents = filteredContents.map(
     async (id) => await getContent(uid, id),

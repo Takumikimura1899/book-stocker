@@ -87,7 +87,7 @@ const UserPage: NextPage<Props> = ({ content }) => {
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const uIds = getAllDocIds('user');
+  const uIds = await getAllDocIds('user');
 
   const posts = staticGenerateContentIds(uIds);
   const newPost = posts.map((post) => {
