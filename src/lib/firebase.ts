@@ -256,17 +256,6 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
 //   return aryy;
 // };
 
-export const getAllDocIdsUser: (
-  collectionName: string,
-) => Promise<string[]> = async (collectionName) => {
-  const posts: string[] = [];
-  const ref = collection(db, collectionName);
-  const querySnapshot = await getDocs(ref);
-  querySnapshot.forEach((doc) => {
-    posts.push(doc.id);
-  });
-  return posts;
-};
 export const getAllDocIds: (
   collectionName: string,
 ) => Promise<string[]> = async (collectionName) => {

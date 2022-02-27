@@ -175,7 +175,6 @@ import {
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getAllDocIds,
-  getAllDocIdsUser,
   getContent,
   getFirebaseData,
   getStorageImage,
