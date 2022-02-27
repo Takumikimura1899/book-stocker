@@ -1,35 +1,17 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler, useContext, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
-import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
+import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
+import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
-import { Navbar } from '~/src/components/molecules/Navbar';
-import { AuthContext } from '~/src/context/AuthContextProvider';
-
 import {
-  deleteFirebaseData,
-  docRef,
-  fetchBookInfo,
-  fetchByUser,
-  firebaseCollectionId,
-  // firebaseCollectionIdContent,
-  firebaseCollectionIdWhereUser,
   getAllDocIds,
-  getFirebaseData,
-  getStorageImage,
+  getContent,
   staticGenerateContentIds,
 } from '~/src/lib/firebase';
 
-interface Result extends Content {
-  id: string;
-  uid: string;
-}
-
 interface Props {
-  results: Result[];
-  uid: string;
+  content: Content;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -49,77 +31,56 @@ const fetcher = (url: string) =>
     return res.json();
   });
 
-const UserPage: NextPage<any> = ({ test }) => {
-  // const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
-  //   deleteFirebaseData(
-  //     e.currentTarget.id,
-  //     e.currentTarget.title,
-  //     e.currentTarget.dataset.uid!,
-  //   );
-  // };
-  // const { currentUser } = useContext(AuthContext);
-  // console.log(currentUser);
-  // console.log(uid);
+const UserPage: NextPage<Props> = ({ content }) => {
+  const { image, title, genre, author, page, status } = content;
 
-  // const initialData = results;
-
-  // const {
-  //   data: result,
-  //   error,
-  //   mutate,
-  // } = useSWR(uid, fetchByUser, {
-  //   fallbackData: results,
-  // });
-
-  // useEffect(() => {
-  //   mutate();
-  // }, [mutate]);
-
-  // if (error) return <div>An error has occurred.</div>;
-  // if (!result) return <div>Loading...</div>;
   return (
     <>
       <Layout>
-        <Navbar />
-        <div>{test}</div>
-        {/* <button
-          onClick={async () => {
-            await mutate(docRef);
-            console.log('完了');
-          }}
-        >
-          更新
-        </button> */}
-        {/* <h1></h1> */}
-        {/* {result.map((result, index) => {
-          const { image } = result;
-          return (
-            <div
-              key={index}
-              className='flex justify-center md:justify-around items-center  py-8'
-            >
-              <MyPageContentImageAtom
-                title={result.title}
-                image={image}
-                // id={result.id!}
-              />
-              <div className='hidden md:flex w-4/5 justify-around'>
-                <MyPageContentAtom>{result.genre}</MyPageContentAtom>
-                <MyPageContentAtom>{result.author}</MyPageContentAtom>
-                <MyPageContentAtom>{result.page}</MyPageContentAtom>
-                <MyPageContentAtom>{result.status}</MyPageContentAtom>
-              </div>
-              <button
-                onClick={handleDelete}
-                // id={result.id}
-                data-uid={result.created_by}
-                title={result.title}
-              >
-                event削除
-              </button>
+        <div className='flex flex-col justify-center md:grid md:grid-cols-3 md:grid-rows-5 h-screen font-bold text-xl '>
+          <MainPageContentAtom
+            title='タイトル:'
+            value={title}
+            className='md:col-span-3 md:text-5xl'
+          />
+          <MainPageContentImageAtom
+            image={image}
+            className='w-32 md:w-48 mx-auto md:row-span-2 md:row-start-2'
+          />
+          <MainPageContentAtom
+            title='ジャンル:'
+            value={genre}
+            className='row-start-2 text-center my-auto'
+          />
+          <MainPageContentAtom
+            title='著者:'
+            value={author}
+            className='row-start-2'
+          />
+          <MainPageContentAtom
+            title='ページ数:'
+            value={page}
+            className='row-start-3'
+          />
+          <MainPageContentAtom
+            title='ステータス:'
+            value={status}
+            className='row-start-3'
+          />
+
+          <div className='col-span-3'>
+            <div>
+              <p>要約:</p>
+              <textarea
+                className='bg-indigo-500 w-full'
+                name='要約'
+                id=''
+                cols={30}
+                rows={10}
+              ></textarea>
             </div>
-          );
-        })} */}
+          </div>
+        </div>
       </Layout>
     </>
   );
@@ -136,35 +97,17 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   });
   return {
     paths: newPost,
-    // paths: [
-    //   { params: { uid: 'a', contentId: 'test1' } },
-    //   { params: { uid: 'a', contentId: 'test2' } },
-    //   { params: { uid: 'a', contentId: 'test3' } },
-    //   { params: { uid: 'b', contentId: 'test1' } },
-    //   { params: { uid: 'b', contentId: 'test4' } },
-    // ],
     fallback: 'blocking',
   };
 };
 
-export const getStaticProps: GetStaticProps<any> = async ({ params }) => {
-  // const uid = params!.id;
-  // const filteredContents = await firebaseCollectionIdWhereUser(uid);
-
-  // const contents = filteredContents.map(async (id) => {
-  //   const content = await getFirebaseData('bookInfo', id);
-  //   const image = content.image
-  //     ? await getStorageImage(uid, content.title)
-  //     : await getStorageImage(uid, 'none');
-  //   return { ...content, image, id, uid };
-  // });
-
-  // const results = await Promise.all(contents);
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+}) => {
+  const content = await getContent(params!.uid, params!.contentId);
   return {
     props: {
-      // results,
-      // uid,
-      test: 'テスト',
+      content,
     },
     // revalidate: 3,
   };

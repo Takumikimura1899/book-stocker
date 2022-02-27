@@ -220,6 +220,25 @@ export const staticGenerateContentIds: (
   });
   return array;
 };
+
+export const getContent: (uid: string, id: string) => Promise<Content> = async (
+  uid,
+  id,
+) => {
+  const docRef = doc(db, 'user', uid, 'bookInfo', id);
+  const docSnap = await getDoc(docRef);
+
+  // asを使用しているのでwithConverterで型付けしたい。
+  const data = docSnap.data() as Content;
+  const imageUrl = await getStorageImage(uid, data.title);
+  const newData = { ...data, image: imageUrl };
+  if (docSnap.exists()) {
+    console.log('Document data:', docSnap.data());
+  } else {
+    console.log('No such document!');
+  }
+  return newData;
+};
 // export const staticGenerateContentIds: (
 //   docRefs: string[],
 // ) => Promise<{ uid: string; contentId: string }[]>[] = (docRefs) => {
