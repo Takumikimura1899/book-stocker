@@ -152,14 +152,14 @@ export const addFirebaseData: (
 
 export const getStorageImage: (
   uid: string,
-  title: string,
-) => Promise<string> = async (uid, title) => {
+  image?: string,
+) => Promise<string> = async (uid, image = 'none') => {
   let storageRef: StorageReference;
-  const encodedTitle = encodeURIComponent(title);
+  const encodedTitle = encodeURIComponent(image);
 
-  title === 'none'
+  image === 'none'
     ? (storageRef = ref(storage, `images/none/file.jpg`))
-    : (storageRef = ref(storage, `images/${uid}/${encodedTitle}/file.jpg`));
+    : (storageRef = ref(storage, `images/${uid}/${image}/file.jpg`));
   return await getDownloadURL(ref(storageRef)).catch(() => 'none');
 };
 
@@ -230,7 +230,7 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
 
   // asを使用しているのでwithConverterで型付けしたい。
   const data = docSnap.data() as Content;
-  const imageUrl = await getStorageImage(uid, data.title);
+  const imageUrl = await getStorageImage(uid, data.image);
   const newData = { ...data, image: imageUrl };
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());
@@ -254,3 +254,15 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
 //   });
 //   return aryy;
 // };
+
+export const getAllDocIdsUser: (
+  collectionName: string,
+) => Promise<string[]> = async (collectionName) => {
+  const posts: string[] = [];
+  const ref = collection(db, collectionName);
+  const querySnapshot = await getDocs(ref);
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.id);
+  });
+  return posts;
+};
