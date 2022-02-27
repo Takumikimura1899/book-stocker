@@ -93,11 +93,11 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
               key={index}
               className='flex justify-center md:justify-around items-center  py-8'
             >
-              <MyPageContentImageAtom
+              {/* <MyPageContentImageAtom
                 title={result.title}
                 image={image}
                 // id={result.id!}
-              />
+              /> */}
               <div className='hidden md:flex w-4/5 justify-around'>
                 <MyPageContentAtom>{result.genre}</MyPageContentAtom>
                 <MyPageContentAtom>{result.author}</MyPageContentAtom>
@@ -120,38 +120,46 @@ const UserPage: NextPage<Props> = ({ results, uid }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const ids = await firebaseCollectionId('user');
+// export const getStaticPaths: GetStaticPaths<Params> = async () => {
+//   const ids = await firebaseCollectionId('user');
 
-  const paths = ids.map((id) => ({
-    params: { id },
-  }));
+//   const paths = ids.map((id) => ({
+//     params: { id },
+//   }));
 
-  return { paths, fallback: 'blocking' };
+//   return { paths, fallback: 'blocking' };
+// };
+
+// export const getStaticProps: GetStaticProps<Props, Params> = async ({
+//   params,
+// }) => {
+//   const uid = params!.id;
+//   const filteredContents = await firebaseCollectionIdWhereUser(uid);
+
+//   const contents = filteredContents.map(async (id) => {
+//     const content = await getFirebaseData('bookInfo', id);
+//     const image = content.image
+//       ? await getStorageImage(uid, content.title)
+//       : await getStorageImage(uid, 'none');
+//     return { ...content, image, id, uid };
+//   });
+
+//   const results = await Promise.all(contents);
+//   return {
+//     props: {
+//       results,
+//       uid,
+//     },
+//     revalidate: 3,
+//   };
+// };
+
+const preid = () => {
+  return (
+    <>
+      <div>test</div>
+    </>
+  );
 };
 
-export const getStaticProps: GetStaticProps<Props, Params> = async ({
-  params,
-}) => {
-  const uid = params!.id;
-  const filteredContents = await firebaseCollectionIdWhereUser(uid);
-
-  const contents = filteredContents.map(async (id) => {
-    const content = await getFirebaseData('bookInfo', id);
-    const image = content.image
-      ? await getStorageImage(uid, content.title)
-      : await getStorageImage(uid, 'none');
-    return { ...content, image, id, uid };
-  });
-
-  const results = await Promise.all(contents);
-  return {
-    props: {
-      results,
-      uid,
-    },
-    revalidate: 3,
-  };
-};
-
-export default UserPage;
+export default preid;

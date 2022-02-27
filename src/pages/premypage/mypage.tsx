@@ -51,23 +51,29 @@ const MyPage: NextPage<Props> = ({ results }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const ids = await firebaseCollectionId('bookInfo');
-  const contents = ids.map(async (id) => {
-    const content = await getFirebaseData('bookInfo', id);
+// export const getStaticProps: GetStaticProps<Props> = async () => {
+//   const ids = await firebaseCollectionId('bookInfo');
+//   const contents = ids.map(async (id) => {
+//     const content = await getFirebaseData('bookInfo', id);
 
-    const image = content.image
-      ? await getStorageImage('WAzfBUCft58yWkwUoqNz', content.title)
-      : await getStorageImage('WAzfBUCft58yWkwUoqNz', 'none');
-    return { ...content, image, id };
-  });
+//     const image = content.image
+//       ? await getStorageImage('WAzfBUCft58yWkwUoqNz', content.title)
+//       : await getStorageImage('WAzfBUCft58yWkwUoqNz', 'none');
+//     return { ...content, image, id };
+//   });
 
-  const results = await Promise.all(contents);
-  return {
-    props: {
-      results,
-    },
-  };
+//   const results = await Promise.all(contents);
+//   return {
+//     props: {
+//       results,
+//     },
+//   };
+// };
+const mypage = () => {
+  return (
+    <>
+      <div>test</div>
+    </>
+  );
 };
-
-export default MyPage;
+export default mypage;

@@ -221,7 +221,7 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
   const onClick = useCallback(
     async (contentId: string) =>
       await router.push(`/users/${uid}/mypage/${contentId}`),
-    [],
+    [router, uid],
   );
   const { currentUser } = useContext(AuthContext);
 
