@@ -178,3 +178,60 @@ export const deleteFirebaseData: (
       ref(storage, `images/${uid}/${encodedTitle}/file.jpg`),
     ));
 };
+
+export const getAllDocIds: (collectionName: string) => string[] = (
+  collectionName,
+) => {
+  const posts: string[] = [];
+  const ref = collection(db, collectionName);
+  async () => {
+    const querySnapshot = await getDocs(ref);
+    querySnapshot.forEach((doc) => {
+      posts.push(doc.id);
+    });
+  };
+  return posts;
+};
+// export const getAllDocIds: (
+//   collectionName: string,
+// ) => Promise<string[]> = async (collectionName) => {
+//   const ref = collection(db, collectionName);
+//   const posts: string[] = [];
+//   const querySnapshot = await getDocs(ref);
+//   querySnapshot.forEach((doc) => {
+//     posts.push(doc.id);
+//   });
+//   return posts;
+// };
+
+export const staticGenerateContentIds: (
+  docRefs: string[],
+) => { uid: string; contentId: string }[] = (docRefs) => {
+  const array: { uid: string; contentId: string }[] = [];
+  docRefs.map((docRef) => {
+    const allContentDocIds = getAllDocIds(docRef);
+    allContentDocIds.forEach((contentId) => {
+      array.push({
+        uid: docRef,
+        contentId,
+      });
+    });
+    // return newArray;
+  });
+  return array;
+};
+// export const staticGenerateContentIds: (
+//   docRefs: string[],
+// ) => Promise<{ uid: string; contentId: string }[]>[] = (docRefs) => {
+//   const aryy = docRefs.map(async (docRef) => {
+//     const allContentDocIds = await getAllDocIds(docRef);
+//     const newArray = allContentDocIds.map((contentId) => {
+//       return {
+//         uid: docRef,
+//         contentId,
+//       };
+//     });
+//     return newArray;
+//   });
+//   return aryy;
+// };

@@ -16,8 +16,10 @@ import {
   firebaseCollectionId,
   // firebaseCollectionIdContent,
   firebaseCollectionIdWhereUser,
+  getAllDocIds,
   getFirebaseData,
   getStorageImage,
+  staticGenerateContentIds,
 } from '~/src/lib/firebase';
 
 interface Result extends Content {
@@ -31,7 +33,8 @@ interface Props {
 }
 
 interface Params extends ParsedUrlQuery {
-  id: string;
+  uid: string;
+  contentId: string;
 }
 
 function sleep(msec: number) {
@@ -122,43 +125,24 @@ const UserPage: NextPage<any> = ({ test }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths<any> = async () => {
-  // const uids = await firebaseCollectionIdContent('user');
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
+  const uIds = getAllDocIds('user');
 
-  //   const paths = uids.map((uid) => (
-
-  //     {
-  //     params: { uid },
-  //   }));
-  interface User {
-    params: {
-      uid: string;
-      contentId: string[];
+  const posts = staticGenerateContentIds(uIds);
+  const newPost = posts.map((post) => {
+    return {
+      params: post,
     };
-  }
-  [];
-
-  const posts = [
-    { uid: 'aaaa', contentIds: ['aaaaa', 'bbbb', 'cccc'] },
-    { uid: 'bbbb', contentIds: ['aaaaa', 'bbbb', 'cccc'] },
-    { uid: 'ccccc', contentIds: ['aaaaa', 'bbbb', 'cccc'] },
-  ];
-
-  const paths = posts.map((post) => {
-    {
-      uid: post.uid;
-    }
   });
-
   return {
-    paths: posts.map((post) => {
-      return {
-        params: {
-          uid: post.uid,
-          contentId: 'ccccc',
-        },
-      };
-    }),
+    paths: newPost,
+    // paths: [
+    //   { params: { uid: 'a', contentId: 'test1' } },
+    //   { params: { uid: 'a', contentId: 'test2' } },
+    //   { params: { uid: 'a', contentId: 'test3' } },
+    //   { params: { uid: 'b', contentId: 'test1' } },
+    //   { params: { uid: 'b', contentId: 'test4' } },
+    // ],
     fallback: 'blocking',
   };
 };
