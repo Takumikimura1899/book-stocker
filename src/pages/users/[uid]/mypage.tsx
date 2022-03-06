@@ -173,6 +173,7 @@ import {
   docRef,
   fetchBookInfo,
   fetchByUser,
+  fetcher,
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getAllDocIds,
@@ -202,11 +203,11 @@ function sleep(msec: number) {
   });
 }
 
-const fetcher = (url: string) =>
-  fetch(url).then(async (res) => {
-    await sleep(5000);
-    return res.json();
-  });
+// const fetcher = (url: string) =>
+//   fetch(url).then(async (res) => {
+//     await sleep(5000);
+//     return res.json();
+//   });
 
 const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
   const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -225,22 +226,22 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
   );
   const { currentUser } = useContext(AuthContext);
 
-  // const initialData = results;
+  const initialData = results;
 
-  // const {
-  //   data: result,
-  //   error,
-  //   mutate,
-  // } = useSWR(uid, fetchByUser, {
-  //   fallbackData: results,
-  // });
+  const {
+    data: result,
+    error,
+    mutate,
+  } = useSWR(`user/${uid}/bookInfo`, fetcher, {
+    fallbackData: results,
+  });
 
-  // useEffect(() => {
-  //   mutate();
-  // }, [mutate]);
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
 
-  // if (error) return <div>An error has occurred.</div>;
-  // if (!result) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred.</div>;
+  if (!result) return <div>Loading...</div>;
   return (
     <>
       <Layout>
@@ -254,7 +255,8 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
           更新
         </button> */}
         {/* <h1></h1> */}
-        {results.map((result, index) => {
+        <p>{result.length}</p>
+        {result.map((result, index) => {
           const { image } = result;
           console.log(image);
           console.log(result.id);
@@ -319,7 +321,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       uid,
       filteredContents,
     },
-    // revalidate: 3,
+    revalidate: 3,
   };
 };
 

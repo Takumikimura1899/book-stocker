@@ -74,11 +74,49 @@ export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
   return results;
 };
 
+function sleep(msec: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, msec);
+  });
+}
+
+export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
+  const filteredContents = await getAllDocIds(url);
+  const uId = url.split('/')[1];
+
+  const contents = filteredContents.map(async (id) => {
+    const content = await getFirebaseContent(url, id);
+    const image = content.image
+      ? await getStorageImage(uId, content.image)
+      : await getStorageImage(uId);
+    return { ...content, image, id, url };
+  });
+
+  const results = await Promise.all(contents);
+  return results;
+};
+
 export const getFirebaseData: (
   uid: string,
   id: string,
 ) => Promise<Content> = async (uid, id) => {
   const docRef = doc(db, 'user', uid, 'bookInfo', id);
+  const docSnap = await getDoc(docRef);
+
+  // asを使用しているのでwithConverterで型付けしたい。
+  const data = docSnap.data() as Content;
+  if (docSnap.exists()) {
+    console.log('Document data:', docSnap.data());
+  } else {
+    console.log('No such document!');
+  }
+  return data;
+};
+export const getFirebaseContent: (
+  url: string,
+  id: string,
+) => Promise<Content> = async (url, id) => {
+  const docRef = doc(db, `${url}/${id}`);
   const docSnap = await getDoc(docRef);
 
   // asを使用しているのでwithConverterで型付けしたい。
