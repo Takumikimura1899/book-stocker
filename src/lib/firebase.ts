@@ -80,17 +80,6 @@ export const getFirebaseContent: (
   return data;
 };
 
-export const firebaseCollectionId: (
-  collectionName: string
-) => Promise<string[]> = async (collectionName) => {
-  const posts: string[] = [];
-  const querySnapshot = await getDocs(collection(db, collectionName));
-  querySnapshot.forEach((doc) => {
-    posts.push(doc.id);
-  });
-  return posts;
-};
-
 export const firebaseCollectionIdWhereUser: (
   user: string
 ) => Promise<string[]> = async (user) => {

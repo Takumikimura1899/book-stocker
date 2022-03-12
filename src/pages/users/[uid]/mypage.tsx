@@ -13,7 +13,6 @@ import {
   deleteFirebaseData,
   docRef,
   fetcher,
-  firebaseCollectionId,
   firebaseCollectionIdWhereUser,
   getAllDocIds,
   getContent,
