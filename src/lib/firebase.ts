@@ -80,21 +80,6 @@ export const getFirebaseContent: (
   return data;
 };
 
-export const firebaseCollectionIdWhereUser: (
-  user: string
-) => Promise<string[]> = async (user) => {
-  const posts: string[] = [];
-
-  const q = query(collection(db, 'bookInfo'), where('created_by', '==', user));
-  const querySnapshot = await getDocs(q);
-
-  querySnapshot.forEach((doc) => {
-    posts.push(doc.id);
-  });
-
-  return posts;
-};
-
 export const addFirebaseData: (
   content: FormContents,
   uid?: string
