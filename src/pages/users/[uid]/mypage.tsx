@@ -12,7 +12,6 @@ import { AuthContext } from '~/src/context/AuthContextProvider';
 import {
   deleteFirebaseData,
   docRef,
-  fetchByUser,
   fetcher,
   firebaseCollectionId,
   firebaseCollectionIdWhereUser,

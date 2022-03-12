@@ -41,22 +41,6 @@ export const storage = getStorage(firebaseApp);
 
 export const docRef = collection(db, 'bookInfo');
 
-export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
-  const uid = id;
-  const filteredContents = await firebaseCollectionIdWhereUser(uid);
-
-  const contents = filteredContents.map(async (id) => {
-    const content = await getFirebaseData('bookInfo', id);
-    const image = content.image
-      ? await getStorageImage(uid, content.title)
-      : await getStorageImage(uid, 'none');
-    return { ...content, image, id, uid };
-  });
-
-  const results = await Promise.all(contents);
-  return results;
-};
-
 function sleep(msec: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, msec);
