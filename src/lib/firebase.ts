@@ -63,22 +63,6 @@ export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
   return results;
 };
 
-export const getFirebaseData: (
-  uid: string,
-  id: string
-) => Promise<Content> = async (uid, id) => {
-  const docRef = doc(db, 'user', uid, 'bookInfo', id);
-  const docSnap = await getDoc(docRef);
-
-  // asを使用しているのでwithConverterで型付けしたい。
-  const data = docSnap.data() as Content;
-  if (docSnap.exists()) {
-    console.log('Document data:', docSnap.data());
-  } else {
-    console.log('No such document!');
-  }
-  return data;
-};
 export const getFirebaseContent: (
   url: string,
   id: string

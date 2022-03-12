@@ -17,7 +17,6 @@ import {
   firebaseCollectionIdWhereUser,
   getAllDocIds,
   getContent,
-  getFirebaseData,
   getStorageImage,
 } from '~/src/lib/firebase';
 
