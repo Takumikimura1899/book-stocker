@@ -41,23 +41,6 @@ export const storage = getStorage(firebaseApp);
 
 export const docRef = collection(db, 'bookInfo');
 
-export const fetchBookInfo: (id: string) => Promise<Content[]> = async (
-  url: string,
-) => {
-  const docRef = collection(db, url);
-  const docSnap = (await getDocs(docRef)) as unknown;
-  console.log(docSnap);
-
-  const data = docSnap as Content[];
-
-  // if (docSnap.exists()) {
-  //   console.log('Document data:', docSnap.data());
-  // } else {
-  //   console.log('No such document!');
-  // }
-  return data;
-};
-
 export const fetchByUser: (id: string) => Promise<Content[]> = async (id) => {
   const uid = id;
   const filteredContents = await firebaseCollectionIdWhereUser(uid);
@@ -98,7 +81,7 @@ export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
 
 export const getFirebaseData: (
   uid: string,
-  id: string,
+  id: string
 ) => Promise<Content> = async (uid, id) => {
   const docRef = doc(db, 'user', uid, 'bookInfo', id);
   const docSnap = await getDoc(docRef);
@@ -114,7 +97,7 @@ export const getFirebaseData: (
 };
 export const getFirebaseContent: (
   url: string,
-  id: string,
+  id: string
 ) => Promise<Content> = async (url, id) => {
   const docRef = doc(db, `${url}/${id}`);
   const docSnap = await getDoc(docRef);
@@ -130,7 +113,7 @@ export const getFirebaseContent: (
 };
 
 export const firebaseCollectionId: (
-  collectionName: string,
+  collectionName: string
 ) => Promise<string[]> = async (collectionName) => {
   const posts: string[] = [];
   const querySnapshot = await getDocs(collection(db, collectionName));
@@ -141,7 +124,7 @@ export const firebaseCollectionId: (
 };
 
 export const firebaseCollectionIdWhereUser: (
-  user: string,
+  user: string
 ) => Promise<string[]> = async (user) => {
   const posts: string[] = [];
 
@@ -157,7 +140,7 @@ export const firebaseCollectionIdWhereUser: (
 
 export const addFirebaseData: (
   content: FormContents,
-  uid?: string,
+  uid?: string
 ) => Promise<void> = async (content, uid?) => {
   const userRef = collection(db, 'user', uid!, 'bookInfo');
   if (content.image) {
@@ -176,7 +159,7 @@ export const addFirebaseData: (
 
 export const getStorageImage: (
   uid: string,
-  image?: string,
+  image?: string
 ) => Promise<string> = async (uid, image = 'none') => {
   let storageRef: StorageReference;
   const encodedTitle = encodeURIComponent(image);
@@ -190,7 +173,7 @@ export const getStorageImage: (
 export const deleteFirebaseData: (
   id: string,
   title: string,
-  uid: string,
+  uid: string
 ) => Promise<void> = async (id, title, uid) => {
   const encodedTitle = encodeURIComponent(title);
   const docRef = doc(db, 'user', uid, 'bookInfo', id);
@@ -199,12 +182,12 @@ export const deleteFirebaseData: (
   await deleteDoc(docRef);
   docSnap.data()!.image &&
     (await deleteObject(
-      ref(storage, `images/${uid}/${encodedTitle}/file.jpg`),
+      ref(storage, `images/${uid}/${encodedTitle}/file.jpg`)
     ));
 };
 
 export const staticGenerateContentIds: (
-  docRefs: string[],
+  docRefs: string[]
 ) => { uid: string; contentId: string }[] = (docRefs) => {
   const array: { uid: string; contentId: string }[] = [];
   docRefs.map(async (docRef) => {
@@ -221,7 +204,7 @@ export const staticGenerateContentIds: (
 
 export const getContent: (uid: string, id: string) => Promise<Content> = async (
   uid,
-  id,
+  id
 ) => {
   const docRef = doc(db, 'user', uid, 'bookInfo', id);
   const docSnap = await getDoc(docRef);
@@ -239,7 +222,7 @@ export const getContent: (uid: string, id: string) => Promise<Content> = async (
 };
 
 export const getAllDocIds: (
-  collectionName: string,
+  collectionName: string
 ) => Promise<string[]> = async (collectionName) => {
   const posts: string[] = [];
   const ref = collection(db, collectionName);
