@@ -39,8 +39,6 @@ export const firestoreApp = initializeFirestore(firebaseApp, {
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-export const docRef = collection(db, 'bookInfo');
-
 function sleep(msec: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, msec);

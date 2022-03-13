@@ -2,19 +2,17 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { MouseEventHandler, useCallback, useContext, useEffect } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
 import { Navbar } from '~/src/components/molecules/Navbar';
-import { AuthContext } from '~/src/context/AuthContextProvider';
 
 import {
   deleteFirebaseData,
   fetcher,
   getAllDocIds,
   getContent,
-  getStorageImage,
 } from '~/src/lib/firebase';
 
 interface Result extends Content {
@@ -33,13 +31,21 @@ interface Params extends ParsedUrlQuery {
 }
 
 const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
-  const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
-    deleteFirebaseData(
-      e.currentTarget.id,
-      e.currentTarget.title,
-      e.currentTarget.dataset.uid!
-    );
+  // const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
+  //   deleteFirebaseData(
+  //     e.currentTarget.id,
+  //     e.currentTarget.title,
+  //     e.currentTarget.dataset.uid!
+  //   );
+  // };
+  const handleDelete: (id: string, uid: string, title: string) => void = (
+    id,
+    uid,
+    title
+  ) => {
+    deleteFirebaseData(id, title, uid);
   };
+
   const router = useRouter();
 
   const onClick = useCallback(
@@ -61,13 +67,13 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
     mutate();
   }, [mutate]);
 
-  if (error) return <div>現在コンテンツの削除を実行しています・・・</div>;
+  if (error) return <div>error</div>;
   if (!result) return <div>Loading...</div>;
   return (
     <>
       <Layout>
+        <p>{`現在保存されているコンテンツは${result.length}個です`}</p>
         <Navbar />
-        <p>{result.length}</p>
         {result.map((result, index) => {
           const { image } = result;
           console.log(image);
@@ -91,12 +97,16 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
                 <MyPageContentAtom>{result.status}</MyPageContentAtom>
               </div>
               <button
-                onClick={handleDelete}
-                id={result.id}
-                data-uid={result.created_by}
-                title={result.title}
+                onClick={() =>
+                  handleDelete(result.id!, result.created_by!, result.title!)
+                }
+                // id={result.id}
+                // data-uid={result.created_by}
+                // title={result.title}
               >
-                event削除
+                <p className='w-14 px-2 mx-2 border-2 rounded-md bg-red-500'>
+                  削除
+                </p>
               </button>
             </div>
           );
