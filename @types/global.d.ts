@@ -18,4 +18,5 @@ type Content = {
   author: string;
   page: number;
   status: '読了' | '読中' | '未読';
+  summary?: string[];
 };
