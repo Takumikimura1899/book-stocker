@@ -50,7 +50,8 @@ export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
   const uId = url.split('/')[1];
 
   const contents = filteredContents.map(async (id) => {
-    const content = await getFirebaseContent(url, id);
+    const params = `${url}/${id}`;
+    const content = await getFirebaseContent(params);
     const image = content.image
       ? await getStorageImage(uId, content.image)
       : await getStorageImage(uId);
@@ -61,11 +62,10 @@ export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
   return results;
 };
 
-export const getFirebaseContent: (
-  url: string,
-  id: string
-) => Promise<Content> = async (url, id) => {
-  const docRef = doc(db, `${url}/${id}`);
+export const getFirebaseContent: (params: string) => Promise<Content> = async (
+  params
+) => {
+  const docRef = doc(db, params);
   const docSnap = await getDoc(docRef);
 
   // asを使用しているのでwithConverterで型付けしたい。
@@ -142,16 +142,15 @@ export const staticGenerateContentIds: (
   return array;
 };
 
-export const getContent: (uid: string, id: string) => Promise<Content> = async (
-  uid,
-  id
-) => {
-  const docRef = doc(db, 'user', uid, 'bookInfo', id);
+export const getContent: (url: string) => Promise<Content> = async (url) => {
+  const docRef = doc(db, url);
   const docSnap = await getDoc(docRef);
+  const uId = url.split('/')[1];
+  const id = url.split('/')[3];
 
   // asを使用しているのでwithConverterで型付けしたい。
   const data = docSnap.data() as Content;
-  const imageUrl = await getStorageImage(uid, data.image);
+  const imageUrl = await getStorageImage(uId, data.image);
   const newData = { ...data, image: imageUrl, id };
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());

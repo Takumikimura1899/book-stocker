@@ -19,18 +19,6 @@ interface Params extends ParsedUrlQuery {
   contentId: string;
 }
 
-function sleep(msec: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, msec);
-  });
-}
-
-const fetcher = (url: string) =>
-  fetch(url).then(async (res) => {
-    await sleep(5000);
-    return res.json();
-  });
-
 const UserPage: NextPage<Props> = ({ content }) => {
   const { image, title, genre, author, page, status } = content;
 
@@ -104,7 +92,9 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const content = await getContent(params!.uid, params!.contentId);
+  const content = await getContent(
+    `user/${params!.uid}/bookInfo/${params!.contentId}`
+  );
   return {
     props: {
       content,
