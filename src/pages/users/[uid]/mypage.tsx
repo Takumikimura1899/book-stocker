@@ -1,43 +1,25 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler, useCallback, useContext, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 import { MyPageContentAtom } from '~/src/components/atoms/myPageAtom/MyPageContentAtom';
 import { MyPageContentImageAtom } from '~/src/components/atoms/myPageAtom/MyPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
 import { Navbar } from '~/src/components/molecules/Navbar';
 
-import {
-  deleteFirebaseData,
-  fetcher,
-  getAllDocIds,
-  getContent,
-} from '~/src/lib/firebase';
-
-interface Result extends Content {
-  id: string;
-  uid: string;
-}
+import { deleteFirebaseData, fetcher, getAllDocIds } from '~/src/lib/firebase';
 
 interface Props {
-  results: Content[];
+  posts: Content[];
   uid: string;
-  filteredContents: string[];
 }
 
 interface Params extends ParsedUrlQuery {
   uid: string;
 }
 
-const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
-  // const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
-  //   deleteFirebaseData(
-  //     e.currentTarget.id,
-  //     e.currentTarget.title,
-  //     e.currentTarget.dataset.uid!
-  //   );
-  // };
+const UserPage: NextPage<Props> = ({ posts, uid }) => {
   const handleDelete: (id: string, uid: string, title: string) => void = (
     id,
     uid,
@@ -55,11 +37,11 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
   );
 
   const {
-    data: result,
+    data: results,
     error,
     mutate,
   } = useSWR(`user/${uid}/bookInfo`, fetcher, {
-    // fallbackData: results,
+    // fallbackData: posts,
     refreshInterval: 1000,
   });
 
@@ -68,13 +50,13 @@ const UserPage: NextPage<Props> = ({ results, uid, filteredContents }) => {
   }, [mutate]);
 
   if (error) return <div>error</div>;
-  if (!result) return <div>Loading...</div>;
+  if (!results) return <div>Loading...</div>;
   return (
     <>
       <Layout>
-        <p>{`現在保存されているコンテンツは${result.length}個です`}</p>
+        <p>{`現在保存されているコンテンツは${results.length}個です`}</p>
         <Navbar />
-        {result.map((result, index) => {
+        {results.map((result, index) => {
           const { image } = result;
           console.log(image);
           console.log(result.id);
@@ -130,17 +112,11 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   const uid = params!.uid;
-  const filteredContents = await getAllDocIds(`user/${uid}/bookInfo`);
-
-  const contents = filteredContents.map(
-    async (id) => await getContent(uid, id)
-  );
-  const results = await Promise.all(contents);
+  const posts = await fetcher(`user/${uid}/bookInfo`);
   return {
     props: {
-      results,
+      posts,
       uid,
-      filteredContents,
     },
     revalidate: 3,
   };
