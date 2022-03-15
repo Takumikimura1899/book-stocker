@@ -85,8 +85,8 @@ const UserPage: NextPage<Props> = ({ content }) => {
             <div>
               <p>要約:</p>
               <div className='bg-indigo-500 p-10 w-full'>
-                {summary?.map((item) => (
-                  <p>{item}</p>
+                {summary?.map((item, index) => (
+                  <p key={index}>{item}</p>
                 ))}
               </div>
             </div>
