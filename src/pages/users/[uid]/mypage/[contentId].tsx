@@ -22,11 +22,19 @@ interface Params extends ParsedUrlQuery {
 
 const UserPage: NextPage<Props> = ({ content }) => {
   const [data, setData] = useState(content);
-  const { image, title, genre, author, page, status } = data;
+  const [summaryItem, setSummaryItem] = useState<string>('');
+  const { image, title, genre, author, page, status, summary } = data;
 
   const onChangeText = (e: any) => {
     const testTitle = e.target.value;
-    setData({ ...data, title: testTitle });
+    setSummaryItem(testTitle);
+  };
+
+  const handleClick = () => {
+    console.log(summary, summaryItem);
+
+    const newSummary: string[] = [...summary!, summaryItem];
+    setData({ ...data, summary: newSummary });
   };
 
   return (
@@ -65,17 +73,22 @@ const UserPage: NextPage<Props> = ({ content }) => {
 
           <div className='col-span-3'>
             <div>
-              <input type='text' onChange={onChangeText} value={title} />
+              <p>add summary</p>
+              <input
+                className='text-white border-2'
+                type='text'
+                onChange={onChangeText}
+                value={summaryItem}
+              />
+              <button onClick={handleClick}>追加</button>
             </div>
             <div>
               <p>要約:</p>
-              <textarea
-                className='bg-indigo-500 w-full'
-                name='要約'
-                id=''
-                cols={30}
-                rows={10}
-              ></textarea>
+              <div className='bg-indigo-500 p-10 w-full'>
+                {summary?.map((item) => (
+                  <p>{item}</p>
+                ))}
+              </div>
             </div>
           </div>
         </div>
