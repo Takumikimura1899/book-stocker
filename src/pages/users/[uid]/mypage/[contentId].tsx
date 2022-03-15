@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
 import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
@@ -20,7 +21,13 @@ interface Params extends ParsedUrlQuery {
 }
 
 const UserPage: NextPage<Props> = ({ content }) => {
-  const { image, title, genre, author, page, status } = content;
+  const [data, setData] = useState(content);
+  const { image, title, genre, author, page, status } = data;
+
+  const onChangeText = (e: any) => {
+    const testTitle = e.target.value;
+    setData({ ...data, title: testTitle });
+  };
 
   return (
     <>
@@ -57,6 +64,9 @@ const UserPage: NextPage<Props> = ({ content }) => {
           />
 
           <div className='col-span-3'>
+            <div>
+              <input type='text' onChange={onChangeText} value={title} />
+            </div>
             <div>
               <p>要約:</p>
               <textarea
