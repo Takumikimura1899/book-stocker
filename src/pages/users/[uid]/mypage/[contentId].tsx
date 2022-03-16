@@ -75,7 +75,7 @@ const UserPage: NextPage<Props> = ({ content }) => {
             <div>
               <p>add summary</p>
               <input
-                className='text-white border-2'
+                className='text-white border-2 '
                 type='text'
                 onChange={onChangeText}
                 value={summaryItem}
@@ -130,9 +130,9 @@ const Test = ({ index, item }: any) => {
   const [test, setTest] = useState<string>('');
   const handleChange = (e: any) => setTest(e.target.value);
   return (
-    <div className='border-2 w-1/4 rounded-md'>
+    <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
       <p key={index}>{item}</p>
-      <textarea name='' id='' value={test} onChange={handleChange}></textarea>
+      <textarea name='' id='' value={test} onChange={handleChange} />
     </div>
   );
 };
