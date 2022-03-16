@@ -1,11 +1,10 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
 import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
 import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
-import { SummaryMolecules } from '~/src/components/molecules/SummaryMolecules';
+import { Summary } from '~/src/components/organisms/Summary';
 import {
   getAllDocIds,
   getContent,
@@ -25,11 +24,6 @@ const UserPage: NextPage<Props> = ({ content }) => {
   const [data, setData] = useState(content);
   const [summaryItem, setSummaryItem] = useState<string>('');
   const { image, title, genre, author, page, status, summary } = data;
-
-  const onChangeText = (e: any) => {
-    const testTitle = e.target.value;
-    setSummaryItem(testTitle);
-  };
 
   const handleClick = () => {
     console.log(summary, summaryItem);
@@ -73,24 +67,7 @@ const UserPage: NextPage<Props> = ({ content }) => {
           />
 
           <div className='col-span-3'>
-            <div>
-              <p>add summary</p>
-              <input
-                className='text-white border-2 '
-                type='text'
-                onChange={onChangeText}
-                value={summaryItem}
-              />
-              <button onClick={handleClick}>追加</button>
-            </div>
-            <div>
-              <p>要約:</p>
-              <div className='bg-indigo-500 p-10 w-full'>
-                {summary?.map((item, index) => {
-                  return <Test item={item} index={index} key={index} />;
-                })}
-              </div>
-            </div>
+            <Summary handleClick={handleClick} summary={summary!} />
           </div>
         </div>
       </Layout>
@@ -125,20 +102,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     },
     // revalidate: 3,
   };
-};
-
-const Test = ({ index, item }: any) => {
-  const [test, setTest] = useState<string>('');
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setTest(e.target.value);
-  return (
-    <SummaryMolecules
-      index={index}
-      item={item}
-      test={test}
-      handleChange={handleChange}
-    />
-  );
 };
 
 export default UserPage;
