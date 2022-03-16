@@ -85,9 +85,9 @@ const UserPage: NextPage<Props> = ({ content }) => {
             <div>
               <p>要約:</p>
               <div className='bg-indigo-500 p-10 w-full'>
-                {summary?.map((item, index) => (
-                  <p key={index}>{item}</p>
-                ))}
+                {summary?.map((item, index) => {
+                  return <Test item={item} index={index} />;
+                })}
               </div>
             </div>
           </div>
@@ -124,6 +124,17 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     },
     // revalidate: 3,
   };
+};
+
+const Test = ({ index, item }: any) => {
+  const [test, setTest] = useState<string>('');
+  const handleChange = (e: any) => setTest(e.target.value);
+  return (
+    <div className='border-2 w-1/4 rounded-md'>
+      <p key={index}>{item}</p>
+      <textarea name='' id='' value={test} onChange={handleChange}></textarea>
+    </div>
+  );
 };
 
 export default UserPage;
