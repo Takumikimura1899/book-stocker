@@ -1,10 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
 import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
+import { SummaryMolecules } from '~/src/components/molecules/SummaryMolecules';
 import {
   getAllDocIds,
   getContent,
@@ -128,12 +129,15 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
 const Test = ({ index, item }: any) => {
   const [test, setTest] = useState<string>('');
-  const handleChange = (e: any) => setTest(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setTest(e.target.value);
   return (
-    <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
-      <p key={index}>{item}</p>
-      <textarea name='' id='' value={test} onChange={handleChange} />
-    </div>
+    <SummaryMolecules
+      index={index}
+      item={item}
+      test={test}
+      handleChange={handleChange}
+    />
   );
 };
 
