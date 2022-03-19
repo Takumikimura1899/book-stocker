@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 
 type Props = {
-  handleClick: () => void;
+  data: Content;
+  setData: React.Dispatch<React.SetStateAction<Content>>;
   summary: string[];
 };
 
-export const Summary: React.FC<Props> = ({ summary, handleClick }) => {
-  const [summaryItem, setSummaryItem] = useState<string>('');
+export const Summary: React.FC<Props> = ({ summary, data, setData }) => {
+  //   const [summaryItem, setSummaryItem] = useState<string>('');
+  const [summaryItem, setSummaryItem] = useState<string>('test');
+
+  const handleClick = () => {
+    console.log(summary, summaryItem);
+
+    const newSummary: string[] = [...summary!, summaryItem];
+    setData({ ...data, summary: newSummary });
+  };
+
   const [test, setTest] = useState<string>('');
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setTest(e.target.value);
@@ -27,7 +37,7 @@ export const Summary: React.FC<Props> = ({ summary, handleClick }) => {
           onChange={onChangeText}
           value={summaryItem}
         />
-        <button onClick={() => handleClick}>追加</button>
+        <button onClick={handleClick}>追加</button>
       </div>
       <div>
         <p>要約:</p>

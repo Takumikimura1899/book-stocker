@@ -22,9 +22,9 @@ interface Params extends ParsedUrlQuery {
 
 const UserPage: NextPage<Props> = ({ content }) => {
   const [data, setData] = useState(content);
-  const [summaryItem, setSummaryItem] = useState<string>('');
   const { image, title, genre, author, page, status, summary } = data;
 
+  const [summaryItem, setSummaryItem] = useState<string>('test');
   const handleClick = () => {
     console.log(summary, summaryItem);
 
@@ -67,7 +67,7 @@ const UserPage: NextPage<Props> = ({ content }) => {
           />
 
           <div className='col-span-3'>
-            <Summary handleClick={handleClick} summary={summary!} />
+            <Summary data={data} setData={setData} summary={summary!} />
           </div>
         </div>
       </Layout>
