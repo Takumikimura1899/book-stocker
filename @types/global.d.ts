@@ -20,3 +20,7 @@ type Content = {
   status: '読了' | '読中' | '未読';
   summary?: string[];
 };
+
+type ValueOf<T> = T[keyof T];
+
+type ContentSummary = ValueOf<Required<Pick<Content, 'summary'>>>;

@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 
+// type Props = {
+//   data: Content;
+//   setData: React.Dispatch<React.SetStateAction<Content>>;
+//   summary: string[];
+// };
+
 type Props = {
-  data: Content;
-  setData: React.Dispatch<React.SetStateAction<Content>>;
-  summary: string[];
+  content: Content;
 };
 
-export const Summary: React.FC<Props> = ({ summary, data, setData }) => {
+export const Summary: React.FC<Props> = ({ content }) => {
   //   const [summaryItem, setSummaryItem] = useState<string>('');
   const [summaryItem, setSummaryItem] = useState<string>('test');
-
+  const [data, setData] = useState(content);
+  const { image, title, genre, author, page, status, summary } = data;
   const handleClick = () => {
     console.log(summary, summaryItem);
 
