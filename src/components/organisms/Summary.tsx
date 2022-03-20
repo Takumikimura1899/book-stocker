@@ -1,4 +1,6 @@
+import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
+import { updateSummary } from '~/src/lib/firebase';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 
 // type Props = {
@@ -9,9 +11,15 @@ import { SummaryMolecules } from '../molecules/SummaryMolecules';
 
 type Props = {
   summary: ContentSummary;
+  params?: Params;
 };
 
-export const Summary: React.FC<Props> = ({ summary }) => {
+interface Params extends ParsedUrlQuery {
+  uid: string;
+  contentId: string;
+}
+
+export const Summary: React.FC<Props> = ({ summary, params }) => {
   const [summaryData, setSummaryData] = useState<ContentSummary>(summary);
   const [summaryItem, setSummaryItem] = useState<string>('test');
 
@@ -31,6 +39,10 @@ export const Summary: React.FC<Props> = ({ summary }) => {
     setSummaryItem(testTitle);
   };
 
+  const handleUpdate = (summaryData: any, params: any) => {
+    updateSummary(params, summaryData);
+  };
+
   return (
     <>
       <div>
@@ -42,6 +54,7 @@ export const Summary: React.FC<Props> = ({ summary }) => {
           value={summaryItem}
         />
         <button onClick={handleClick}>追加</button>
+        <button onClick={() => handleUpdate(summaryData, params)}>更新</button>
       </div>
       <div>
         <p>要約:</p>

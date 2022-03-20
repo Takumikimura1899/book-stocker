@@ -13,6 +13,7 @@ import {
 
 interface Props {
   content: Content;
+  params?: Params;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -20,7 +21,7 @@ interface Params extends ParsedUrlQuery {
   contentId: string;
 }
 
-const UserPage: NextPage<Props> = ({ content }) => {
+const UserPage: NextPage<Props> = ({ content, params }) => {
   // const [data, setData] = useState(content);
   const { image, title, genre, author, page, status, summary } = content;
 
@@ -59,7 +60,7 @@ const UserPage: NextPage<Props> = ({ content }) => {
           />
 
           <div className='col-span-3'>
-            <Summary summary={summary!} />
+            <Summary summary={summary!} params={params} />
           </div>
         </div>
       </Layout>
@@ -91,6 +92,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   return {
     props: {
       content,
+      params,
     },
     // revalidate: 3,
   };

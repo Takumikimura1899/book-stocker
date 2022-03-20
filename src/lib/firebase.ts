@@ -12,6 +12,7 @@ import {
   where,
   deleteDoc,
   CollectionReference,
+  updateDoc,
 } from 'firebase/firestore';
 import {
   deleteObject,
@@ -21,6 +22,7 @@ import {
   StorageReference,
   uploadBytes,
 } from 'firebase/storage';
+import { ParsedUrlQuery } from 'querystring';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -171,4 +173,16 @@ export const getAllDocIds: (
     posts.push(doc.id);
   });
   return posts;
+};
+
+export const updateSummary: (
+  params: ParsedUrlQuery,
+  summaryData: string[]
+) => void = async (params, summaryData) => {
+  const url = String(params);
+  const ref = doc(db, `user/${params!.uid}/bookInfo/${params!.contentId}`);
+
+  await updateDoc(ref, {
+    summary: summaryData,
+  });
 };
