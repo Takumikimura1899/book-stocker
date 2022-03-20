@@ -18,7 +18,7 @@ type Content = {
   author: string;
   page: number;
   status: '読了' | '読中' | '未読';
-  summary?: string[];
+  summary?: { title: string; content: string[] }[];
 };
 
 type ValueOf<T> = T[keyof T];

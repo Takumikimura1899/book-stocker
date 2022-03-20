@@ -19,7 +19,11 @@ export const Form = () => {
   const methods = useForm<FormContents>();
   const onSubmit: SubmitHandler<FormContents> = (content) => {
     console.log(content);
-    const newContent = { ...content, created_by: uid, summary: [] };
+    const newContent = {
+      ...content,
+      created_by: uid,
+      summary: [{ title: 'テスト', content: ['test'] }],
+    };
     addFirebaseData(newContent, uid);
   };
 

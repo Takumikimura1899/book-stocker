@@ -26,7 +26,10 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
   const handleClick = () => {
     console.log(summaryData, summaryItem);
 
-    const newSummary: string[] = [...summaryData, summaryItem];
+    const newSummary: ContentSummary = [
+      ...summaryData,
+      { title: summaryItem, content: [] },
+    ];
     setSummaryData(newSummary);
   };
 
@@ -59,7 +62,7 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
       <div>
         <p>要約:</p>
         <div className='bg-indigo-500 p-10 w-full'>
-          {summaryData.map((item) => {
+          {summaryData.map(({ title }) => {
             const id = Math.random() * 1000;
             // return (
             //   <SummaryMolecules
@@ -69,7 +72,13 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
             //     test={test}
             //     handleChange={handleChange}
             //   />
-            return <SummaryItem key={id} item={item} />;
+            return (
+              <SummaryItem
+                key={id}
+                item={title}
+                setSummaryData={setSummaryData}
+              />
+            );
           })}
         </div>
       </div>
@@ -77,11 +86,21 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
   );
 };
 
-const SummaryItem = ({ item }: { item: any }) => {
+const SummaryItem = ({
+  item,
+  setSummaryData,
+}: {
+  item: any;
+  setSummaryData: any;
+}) => {
   const [test, setTest] = useState<string>('test');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setTest(e.target.value);
+
+  const handleOnBlur = () => {
+    setSummaryData();
+  };
 
   return (
     <SummaryMolecules item={item} test={test} handleChange={handleChange} />
