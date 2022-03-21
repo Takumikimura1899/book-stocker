@@ -177,7 +177,7 @@ export const getAllDocIds: (
 
 export const updateSummary: (
   params: ParsedUrlQuery,
-  summaryData: string[]
+  summaryData: ContentSummary
 ) => void = async (params, summaryData) => {
   const url = String(params);
   const ref = doc(db, `user/${params!.uid}/bookInfo/${params!.contentId}`);

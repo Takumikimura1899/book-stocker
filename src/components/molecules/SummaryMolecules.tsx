@@ -1,20 +1,28 @@
 import React from 'react';
 
 type Props = {
-  item: string;
-  test: string;
-  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  summary: {
+    title: string;
+    content: string[];
+  };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  //   onBlur:any
 };
 
 export const SummaryMolecules: React.FC<Props> = ({
-  item,
-  test,
+  summary,
   handleChange,
 }) => {
   return (
-    <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
-      <p>{item}</p>
-      <textarea name='' id='' value={test} onChange={(e) => handleChange(e)} />
-    </div>
+    <>
+      {/* <textarea name='' id='' value={test} onChange={(e) => handleChange(e)} /> */}
+      {summary.content.map((arry) => {
+        return (
+          <>
+            <p>{arry}</p>
+          </>
+        );
+      })}
+    </>
   );
 };

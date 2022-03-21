@@ -42,7 +42,10 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
     setSummaryItem(testTitle);
   };
 
-  const handleUpdate = (summaryData: any, params: any) => {
+  const handleUpdate = (
+    summaryData: ContentSummary,
+    params: ParsedUrlQuery
+  ) => {
     updateSummary(params, summaryData);
   };
 
@@ -57,12 +60,12 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
           value={summaryItem}
         />
         <button onClick={handleClick}>追加</button>
-        <button onClick={() => handleUpdate(summaryData, params)}>更新</button>
+        <button onClick={() => handleUpdate(summaryData, params!)}>更新</button>
       </div>
       <div>
         <p>要約:</p>
         <div className='bg-indigo-500 p-10 w-full'>
-          {summaryData.map(({ title }) => {
+          {summaryData.map((summary) => {
             const id = Math.random() * 1000;
             // return (
             //   <SummaryMolecules
@@ -75,7 +78,8 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
             return (
               <SummaryItem
                 key={id}
-                item={title}
+                summary={summary}
+                summaryData={summaryData}
                 setSummaryData={setSummaryData}
               />
             );
@@ -87,22 +91,51 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 };
 
 const SummaryItem = ({
-  item,
+  summary,
+  summaryData,
   setSummaryData,
 }: {
-  item: any;
+  summary: {
+    title: string;
+    content: string[];
+  };
+  summaryData: any;
   setSummaryData: any;
 }) => {
-  const [test, setTest] = useState<string>('test');
+  const [content, setContent] = useState<string>('contentはここです');
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setTest(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+    console.log(e.target.value);
+  };
 
   const handleOnBlur = () => {
-    setSummaryData();
+    // setSummaryData();
+  };
+
+  const handleOnClick = () => {
+    console.log(content);
+    const copyContent = summary.content;
+    const newContent = [...copyContent, content];
+    // setSummaryData([...summaryData,])
+    setSummaryData([{ ...summaryData, content: newContent }]);
   };
 
   return (
-    <SummaryMolecules item={item} test={test} handleChange={handleChange} />
+    <>
+      <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
+        <p>{summary.title}</p>
+        <div className='flex'>
+          <input
+            className='w-3/5'
+            type='text'
+            value={content}
+            onChange={handleChange}
+          />
+          <button onClick={handleOnClick}>追加</button>
+        </div>
+        <SummaryMolecules summary={summary} handleChange={handleChange} />
+      </div>
+    </>
   );
 };
