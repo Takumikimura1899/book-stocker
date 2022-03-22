@@ -22,7 +22,13 @@ export const Form = () => {
     const newContent = {
       ...content,
       created_by: uid,
-      summary: [{ title: 'テスト', content: ['test'] }],
+      summary: [
+        {
+          id: '0',
+          title: 'initialSummaryItem',
+          item: [{ itemId: 0, itemData: 'initialItemData' }],
+        },
+      ],
     };
     addFirebaseData(newContent, uid);
   };

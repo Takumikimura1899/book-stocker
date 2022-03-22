@@ -21,14 +21,19 @@ interface Params extends ParsedUrlQuery {
 
 export const Summary: React.FC<Props> = ({ summary, params }) => {
   const [summaryData, setSummaryData] = useState<ContentSummary>(summary);
-  const [summaryItem, setSummaryItem] = useState<string>('test');
+  const [summaryDataTitle, setSummaryTitle] = useState<string>('test');
 
-  const handleClick = () => {
-    console.log(summaryData, summaryItem);
+  const handleAddItem = () => {
+    console.log(summaryData, summaryDataTitle);
 
+    const id = Math.random() * 1000;
     const newSummary: ContentSummary = [
       ...summaryData,
-      { title: summaryItem, content: [] },
+      {
+        id: id,
+        title: summaryDataTitle,
+        item: [{ itemId: 0, itemData: 'addItemData' }],
+      },
     ];
     setSummaryData(newSummary);
   };
@@ -39,7 +44,7 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const testTitle = e.target.value;
-    setSummaryItem(testTitle);
+    setSummaryTitle(testTitle);
   };
 
   const handleUpdate = (
@@ -57,16 +62,19 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
           className='text-white border-2 '
           type='text'
           onChange={onChangeText}
-          value={summaryItem}
+          value={summaryDataTitle}
         />
-        <button onClick={handleClick}>追加</button>
+        <button className='mx-4' onClick={handleAddItem}>
+          アイテムを追加
+        </button>
         <button onClick={() => handleUpdate(summaryData, params!)}>更新</button>
       </div>
       <div>
         <p>要約:</p>
         <div className='bg-indigo-500 p-10 w-full'>
           {summaryData.map((summary) => {
-            const id = Math.random() * 1000;
+            const { id } = summary;
+
             // return (
             //   <SummaryMolecules
             //     item={item}
@@ -78,8 +86,8 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
             return (
               <SummaryItem
                 key={id}
+                id={id}
                 summary={summary}
-                summaryData={summaryData}
                 setSummaryData={setSummaryData}
               />
             );
@@ -92,15 +100,19 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 
 const SummaryItem = ({
   summary,
-  summaryData,
+  id,
   setSummaryData,
 }: {
   summary: {
+    id: string | number;
     title: string;
-    content: string[];
+    item: {
+      itemId: string | number;
+      itemData: string;
+    }[];
   };
-  summaryData: any;
-  setSummaryData: any;
+  id: number | string;
+  setSummaryData: React.Dispatch<React.SetStateAction<ContentSummary>>;
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
 
@@ -113,12 +125,30 @@ const SummaryItem = ({
     // setSummaryData();
   };
 
-  const handleOnClick = () => {
+  const handleOnClick = (id: number | string) => {
     console.log(content);
-    const copyContent = summary.content;
-    const newContent = [...copyContent, content];
+    const itemId = Math.random() * 1000;
+    const newSummaryItem = {
+      ...summary,
+      item: [...summary.item, { itemId: itemId, itemData: content }],
+    };
+    console.log(newSummaryItem);
+
+    setSummaryData((prevSummaryData) => {
+      // const findedSummaryData = prevSummaryData.find(
+      //   (summaryData) => summaryData.id === id
+      // );
+      // findedSummaryData!.item = newSummaryItem;
+      // return [...prevSummaryData, findedSummaryData!];
+      const filteredSummaryData = prevSummaryData.filter(
+        (prevSummary) => prevSummary.id !== id
+      );
+      return [...filteredSummaryData, newSummaryItem];
+    });
+
     // setSummaryData([...summaryData,])
-    setSummaryData([{ ...summaryData, content: newContent }]);
+    // const newSummaryContent = [...summary.content, content];
+    // setSummaryData([...summaryData, newSummaryContent]);
   };
 
   return (
@@ -132,9 +162,9 @@ const SummaryItem = ({
             value={content}
             onChange={handleChange}
           />
-          <button onClick={handleOnClick}>追加</button>
+          <button onClick={() => handleOnClick(id)}>メモ追加</button>
         </div>
-        <SummaryMolecules summary={summary} handleChange={handleChange} />
+        <SummaryMolecules summary={summary} />
       </div>
     </>
   );
