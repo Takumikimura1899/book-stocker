@@ -129,14 +129,8 @@ const SummaryItem = ({
   };
 
   const handleOnClick = (id: number | string) => {
-    console.log(content);
+    // idはちゃんとつけましょう！
     const itemId = Math.random() * 1000;
-    const newSummaryItem = {
-      ...summary,
-      item: [...summary.item, { itemId: itemId, itemData: content }],
-    };
-    console.log(newSummaryItem);
-
     const newSummary = summaryData.map((summary) =>
       summary.id === id
         ? {
@@ -145,25 +139,7 @@ const SummaryItem = ({
           }
         : summary
     );
-
     setSummaryData(newSummary);
-    // setSummaryData((prevSummaryData) => {
-    //   // const findedSummaryData = prevSummaryData.find(
-    //   //   (summaryData) => summaryData.id === id
-    //   // );
-    //   // findedSummaryData!.item = newSummaryItem;
-    //   // return [...prevSummaryData, findedSummaryData!];
-    //   const filteredSummaryData = prevSummaryData.filter(
-    //     (prevSummary) => prevSummary.id !== id
-    //   );
-    //   return [...filteredSummaryData, newSummaryItem];
-
-    // });
-
-    const findedItem = summaryData.find((summary) => summary.id === id);
-    // setSummaryData([...summaryData,])
-    // const newSummaryContent = [...summary.content, content];
-    // setSummaryData([...summaryData, newSummaryContent]);
   };
 
   return (
