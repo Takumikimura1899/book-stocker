@@ -89,6 +89,7 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
                 id={id}
                 summary={summary}
                 setSummaryData={setSummaryData}
+                summaryData={summaryData}
               />
             );
           })}
@@ -102,6 +103,7 @@ const SummaryItem = ({
   summary,
   id,
   setSummaryData,
+  summaryData,
 }: {
   summary: {
     id: string | number;
@@ -113,6 +115,7 @@ const SummaryItem = ({
   };
   id: number | string;
   setSummaryData: React.Dispatch<React.SetStateAction<ContentSummary>>;
+  summaryData: ContentSummary;
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
 
@@ -134,18 +137,28 @@ const SummaryItem = ({
     };
     console.log(newSummaryItem);
 
-    setSummaryData((prevSummaryData) => {
-      // const findedSummaryData = prevSummaryData.find(
-      //   (summaryData) => summaryData.id === id
-      // );
-      // findedSummaryData!.item = newSummaryItem;
-      // return [...prevSummaryData, findedSummaryData!];
-      const filteredSummaryData = prevSummaryData.filter(
-        (prevSummary) => prevSummary.id !== id
-      );
-      return [...filteredSummaryData, newSummaryItem];
+    const newSummary = summaryData.map((summary) => {
+      if (summary.id === id) {
+        summary = newSummaryItem;
+      }
+      return summary;
     });
 
+    setSummaryData(newSummary);
+    // setSummaryData((prevSummaryData) => {
+    //   // const findedSummaryData = prevSummaryData.find(
+    //   //   (summaryData) => summaryData.id === id
+    //   // );
+    //   // findedSummaryData!.item = newSummaryItem;
+    //   // return [...prevSummaryData, findedSummaryData!];
+    //   const filteredSummaryData = prevSummaryData.filter(
+    //     (prevSummary) => prevSummary.id !== id
+    //   );
+    //   return [...filteredSummaryData, newSummaryItem];
+
+    // });
+
+    const findedItem = summaryData.find((summary) => summary.id === id);
     // setSummaryData([...summaryData,])
     // const newSummaryContent = [...summary.content, content];
     // setSummaryData([...summaryData, newSummaryContent]);
