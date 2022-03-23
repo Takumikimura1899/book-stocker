@@ -137,12 +137,14 @@ const SummaryItem = ({
     };
     console.log(newSummaryItem);
 
-    const newSummary = summaryData.map((summary) => {
-      if (summary.id === id) {
-        summary = newSummaryItem;
-      }
-      return summary;
-    });
+    const newSummary = summaryData.map((summary) =>
+      summary.id === id
+        ? {
+            ...summary,
+            item: [...summary.item, { itemId: itemId, itemData: content }],
+          }
+        : summary
+    );
 
     setSummaryData(newSummary);
     // setSummaryData((prevSummaryData) => {
