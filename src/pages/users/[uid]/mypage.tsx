@@ -42,7 +42,7 @@ const UserPage: NextPage<Props> = ({ posts, uid }) => {
     mutate,
   } = useSWR(`user/${uid}/bookInfo`, fetcher, {
     // fallbackData: posts,
-    refreshInterval: 1000,
+    // refreshInterval: 1000,
   });
 
   useEffect(() => {

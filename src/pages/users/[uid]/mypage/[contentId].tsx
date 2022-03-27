@@ -1,11 +1,13 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { MainPageContentAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentAtom';
 import { MainPageContentImageAtom } from '~/src/components/atoms/mainPageAtom/MainPageContentImageAtom';
 import { Layout } from '~/src/components/layout/Layout';
 import { Summary } from '~/src/components/organisms/Summary';
 import {
+  contentFetcher,
   getAllDocIds,
   getContent,
   staticGenerateContentIds,
@@ -21,8 +23,29 @@ interface Params extends ParsedUrlQuery {
   contentId: string;
 }
 
-const UserPage: NextPage<Props> = ({ content, params }) => {
+const UserPage: NextPage<Props> = ({ params }) => {
   // const [data, setData] = useState(content);
+
+  const {
+    data: content,
+    error,
+    mutate,
+  } = useSWR(
+    `user/${params!.uid}/bookInfo/${params!.contentId}`,
+    contentFetcher,
+    {
+      // fallbackData: posts,
+      // refreshInterval: 1000,
+    }
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
+  if (error) return <div>error</div>;
+  if (!content) return <div>Loading...</div>;
+
   const { image, title, genre, author, page, status, summary } = content;
 
   return (
@@ -94,7 +117,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       content,
       params,
     },
-    // revalidate: 3,
+    revalidate: 3,
   };
 };
 

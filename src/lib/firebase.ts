@@ -64,6 +64,13 @@ export const fetcher: (url: string) => Promise<Content[]> = async (url) => {
   return results;
 };
 
+export const contentFetcher: (params: string) => Promise<Content> = async (
+  params
+) => {
+  const firebaseContent = await getContent(params);
+  return firebaseContent;
+};
+
 export const getFirebaseContent: (params: string) => Promise<Content> = async (
   params
 ) => {
