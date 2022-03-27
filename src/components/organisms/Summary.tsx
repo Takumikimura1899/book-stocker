@@ -2,6 +2,7 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
 import { updateSummary } from '~/src/lib/firebase';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
+import { MemoModal } from './MemoModal';
 
 // type Props = {
 //   data: Content;
@@ -144,6 +145,7 @@ const SummaryItem = ({
 
   return (
     <>
+      {/* <MemoModal /> */}
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <p>{summary.title}</p>
         <div className='flex'>
