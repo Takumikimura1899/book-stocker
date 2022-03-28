@@ -1,7 +1,8 @@
 import { Dialog } from '@headlessui/react';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { updateSummary } from '~/src/lib/firebase';
+import { ButtonAtom } from '../atoms/ButtonAtom';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 import { MemoModal } from './MemoModal';
 
@@ -121,6 +122,7 @@ const SummaryItem = ({
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
   const [isOpen, setIsOpen] = useState(true);
+  const completeButtonRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
@@ -148,36 +150,47 @@ const SummaryItem = ({
   return (
     <>
       {/* <MemoModal /> */}
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <Dialog.Overlay />
-
-        <Dialog.Title>{summary.title}</Dialog.Title>
-        <Dialog.Description>
-          This will permanently deactivate your account
-        </Dialog.Description>
-
-        <p>
-          Are you sure you want to deactivate your account? All of your data
-          will be permanently removed. This action cannot be undone.
-        </p>
-
-        <button onClick={() => setIsOpen(false)}>Deactivate</button>
-        <button onClick={() => setIsOpen(false)}>Cancel</button>
+      <Dialog
+        // initialFocus={completeButtonRef}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        // static={true}
+        className='fixed z-10 inset-0 overflow-y-auto'
+      >
+        <Dialog.Overlay className='fixed inset-0 bg-black opacity-30'>
+          <div className='flex items-center justify-center min-h-screen'>
+            <div className='flex flex-col items-center justify-center min-h-screen'>
+              <Dialog.Title>{summary.title}</Dialog.Title>
+              <Dialog.Description>
+                メモの内容を編集します
+                <input
+                  className='w-3/5'
+                  type='text'
+                  value={content}
+                  onChange={handleChange}
+                />
+                <button onClick={() => handleOnClick(id)}>メモ追加</button>
+                <SummaryMolecules summary={summary} />
+                <ButtonAtom
+                  onClick={() => setIsOpen(false)}
+                  title='モーダルを閉じる'
+                />
+                <ButtonAtom
+                  onClick={() => setIsOpen(false)}
+                  title='モーダルを閉じる'
+                />
+              </Dialog.Description>
+              {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}
+            </div>
+          </div>
+        </Dialog.Overlay>
       </Dialog>
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <div className='flex'>
           <p>{summary.title}</p>
-          <button>編集する</button>
+          <ButtonAtom onClick={() => setIsOpen(true)} title='編集する' />
         </div>
-        <div className='flex'>
-          <input
-            className='w-3/5'
-            type='text'
-            value={content}
-            onChange={handleChange}
-          />
-          <button onClick={() => handleOnClick(id)}>メモ追加</button>
-        </div>
+        <div className='flex'></div>
         <SummaryMolecules summary={summary} />
       </div>
     </>
