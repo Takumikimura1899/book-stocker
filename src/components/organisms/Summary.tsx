@@ -1,3 +1,4 @@
+import { Dialog } from '@headlessui/react';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
 import { updateSummary } from '~/src/lib/firebase';
@@ -119,6 +120,7 @@ const SummaryItem = ({
   summaryData: ContentSummary;
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
@@ -146,8 +148,27 @@ const SummaryItem = ({
   return (
     <>
       {/* <MemoModal /> */}
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <Dialog.Overlay />
+
+        <Dialog.Title>{summary.title}</Dialog.Title>
+        <Dialog.Description>
+          This will permanently deactivate your account
+        </Dialog.Description>
+
+        <p>
+          Are you sure you want to deactivate your account? All of your data
+          will be permanently removed. This action cannot be undone.
+        </p>
+
+        <button onClick={() => setIsOpen(false)}>Deactivate</button>
+        <button onClick={() => setIsOpen(false)}>Cancel</button>
+      </Dialog>
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
-        <p>{summary.title}</p>
+        <div className='flex'>
+          <p>{summary.title}</p>
+          <button>編集する</button>
+        </div>
         <div className='flex'>
           <input
             className='w-3/5'
