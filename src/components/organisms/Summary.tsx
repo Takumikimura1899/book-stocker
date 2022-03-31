@@ -155,35 +155,36 @@ const SummaryItem = ({
         open={isOpen}
         onClose={() => setIsOpen(false)}
         // static={true}
-        className='fixed z-10 inset-0 overflow-y-auto'
+        className={`fixed z-10 inset-0 overflow-y-auto ${
+          isOpen ? 'bg-gray-900' : ''
+        } `}
       >
-        <Dialog.Overlay className='fixed inset-0 bg-black opacity-30'>
-          <div className='flex items-center justify-center min-h-screen'>
-            <div className='flex flex-col items-center justify-center min-h-screen'>
-              <Dialog.Title>{summary.title}</Dialog.Title>
-              <Dialog.Description>
-                メモの内容を編集します
-                <input
-                  className='w-3/5'
-                  type='text'
-                  value={content}
-                  onChange={handleChange}
-                />
-                <button onClick={() => handleOnClick(id)}>メモ追加</button>
-                <SummaryMolecules summary={summary} />
-                <ButtonAtom
-                  onClick={() => setIsOpen(false)}
-                  title='モーダルを閉じる'
-                />
-                <ButtonAtom
-                  onClick={() => setIsOpen(false)}
-                  title='モーダルを閉じる'
-                />
-              </Dialog.Description>
-              {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}
-            </div>
+        <div className='flex items-center justify-center min-h-screen '>
+          <Dialog.Overlay className='' />
+          <div className='flex flex-col items-center justify-center min-h-screen bg-green-300 '>
+            <Dialog.Title>{summary.title}</Dialog.Title>
+            <Dialog.Description>
+              メモの内容を編集します
+              <input
+                className='w-3/5'
+                type='text'
+                value={content}
+                onChange={handleChange}
+              />
+              <button onClick={() => handleOnClick(id)}>メモ追加</button>
+              <SummaryMolecules summary={summary} />
+              <ButtonAtom
+                onClick={() => setIsOpen(false)}
+                title='モーダルを閉じる'
+              />
+              <ButtonAtom
+                onClick={() => setIsOpen(false)}
+                title='モーダルを閉じる'
+              />
+            </Dialog.Description>
+            {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}
           </div>
-        </Dialog.Overlay>
+        </div>
       </Dialog>
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <div className='flex'>
