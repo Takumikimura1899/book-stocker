@@ -37,25 +37,23 @@ export const Modal: React.FC<ModalProps> = ({
         <Dialog.Overlay className='' />
         <div className='flex flex-col items-center justify-center min-h-screen bg-green-300 '>
           <Dialog.Title>{summary.title}</Dialog.Title>
-          <Dialog.Description>
-            メモの内容を編集します
-            <input
-              className='w-3/5'
-              type='text'
-              value={content}
-              onChange={handleChange}
-            />
-            <button onClick={() => handleOnClick(id)}>メモ追加</button>
-            <SummaryMolecules summary={summary} />
-            <ButtonAtom
-              onClick={() => setIsOpen(false)}
-              title='モーダルを閉じる'
-            />
-            <ButtonAtom
-              onClick={() => setIsOpen(false)}
-              title='モーダルを閉じる'
-            />
-          </Dialog.Description>
+          <Dialog.Description>メモの内容を編集します</Dialog.Description>
+          <input
+            className='w-3/5'
+            type='text'
+            value={content}
+            onChange={handleChange}
+          />
+          <button onClick={() => handleOnClick(id)}>メモ追加</button>
+          <SummaryMolecules summary={summary} />
+          <ButtonAtom
+            onClick={() => setIsOpen(false)}
+            title='モーダルを閉じる'
+          />
+          <ButtonAtom
+            onClick={() => setIsOpen(false)}
+            title='モーダルを閉じる'
+          />
           {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}
         </div>
       </div>
