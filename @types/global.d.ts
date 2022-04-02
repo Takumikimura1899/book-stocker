@@ -9,6 +9,12 @@ type FormContents = {
 
 type BookGenre = 'マンガ' | '雑誌' | 'ビジネス' | '文学' | 'IT' | '趣味';
 
+type Summary = {
+  id: number | string;
+  title: string;
+  item: { itemId: string | number; itemData: string }[];
+};
+
 type Content = {
   id?: string;
   created_by?: string;
@@ -18,11 +24,7 @@ type Content = {
   author: string;
   page: number;
   status: '読了' | '読中' | '未読';
-  summary?: {
-    id: number | string;
-    title: string;
-    item: { itemId: string | number; itemData: string }[];
-  }[];
+  summary?: Summary[];
 };
 
 type ValueOf<T> = T[keyof T];

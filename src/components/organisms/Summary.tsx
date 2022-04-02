@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { useRef, useState } from 'react';
 import { updateSummary } from '~/src/lib/firebase';
 import { ButtonAtom } from '../atoms/ButtonAtom';
+import { Modal } from '../molecules/Modal';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 import { MemoModal } from './MemoModal';
 
@@ -149,43 +150,15 @@ const SummaryItem = ({
 
   return (
     <>
-      {/* <MemoModal /> */}
-      <Dialog
-        // initialFocus={completeButtonRef}
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        // static={true}
-        className={`fixed z-10 inset-0 overflow-y-auto ${
-          isOpen ? 'bg-gray-900' : ''
-        } `}
-      >
-        <div className='flex items-center justify-center min-h-screen '>
-          <Dialog.Overlay className='' />
-          <div className='flex flex-col items-center justify-center min-h-screen bg-green-300 '>
-            <Dialog.Title>{summary.title}</Dialog.Title>
-            <Dialog.Description>
-              メモの内容を編集します
-              <input
-                className='w-3/5'
-                type='text'
-                value={content}
-                onChange={handleChange}
-              />
-              <button onClick={() => handleOnClick(id)}>メモ追加</button>
-              <SummaryMolecules summary={summary} />
-              <ButtonAtom
-                onClick={() => setIsOpen(false)}
-                title='モーダルを閉じる'
-              />
-              <ButtonAtom
-                onClick={() => setIsOpen(false)}
-                title='モーダルを閉じる'
-              />
-            </Dialog.Description>
-            {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}
-          </div>
-        </div>
-      </Dialog>
+      <Modal
+        isOpen={isOpen}
+        summary={summary}
+        content={content}
+        id={id}
+        setIsOpen={setIsOpen}
+        handleChange={handleChange}
+        handleOnClick={handleOnClick}
+      />
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <div className='flex'>
           <p>{summary.title}</p>
