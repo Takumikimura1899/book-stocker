@@ -4,7 +4,7 @@ import { testContent, testParam } from '~/src/constant/Constant';
 import { Summary } from './Summary';
 
 export const MemoModal = () => {
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
 
   return (
     <>

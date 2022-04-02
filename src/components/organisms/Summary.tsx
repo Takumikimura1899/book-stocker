@@ -121,7 +121,7 @@ const SummaryItem = ({
   summaryData: ContentSummary;
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const completeButtonRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,7 +191,6 @@ const SummaryItem = ({
           <p>{summary.title}</p>
           <ButtonAtom onClick={() => setIsOpen(true)} title='編集する' />
         </div>
-        <div className='flex'></div>
         <SummaryMolecules summary={summary} />
       </div>
     </>
