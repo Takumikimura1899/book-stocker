@@ -25,7 +25,13 @@ export const SummaryEdit: React.FC<Props> = ({ summary }) => {
           <div key={itemId} className='flex'>
             <p>{itemData}</p>
             <ButtonAtom title='編集する' onClick={onClick} />
-            {isOpen && <MemoEditModal />}
+            {isOpen && (
+              <MemoEditModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                itemData={itemData}
+              />
+            )}
           </div>
         );
       })}
