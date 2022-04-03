@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React from 'react';
 import { ButtonAtom } from '../atoms/ButtonAtom';
-import { SummaryMolecules } from './SummaryMolecules';
+import { SummaryEdit } from './SummaryEdit';
 
 type ModalProps = {
   isOpen: boolean;
@@ -30,13 +30,13 @@ export const Modal: React.FC<ModalProps> = ({
       as='div'
       // static={true}
       className={`fixed z-10 inset-0 overflow-y-auto ${
-        isOpen ? 'bg-gray-900' : ''
+        isOpen ? 'bg-gray-900 bg-opacity-80' : ''
       } `}
     >
       <div className='flex items-center justify-center min-h-screen '>
         <Dialog.Overlay className='' />
-        <div className='flex flex-col items-center justify-center min-h-screen bg-green-300 '>
-          <Dialog.Title>{summary.title}</Dialog.Title>
+        <div className='flex flex-col items-center justify-center p-4 rounded-xl bg-green-300 '>
+          <Dialog.Title className=' text-3xl'>{summary.title}</Dialog.Title>
           <Dialog.Description>メモの内容を編集します</Dialog.Description>
           <input
             className='w-3/5'
@@ -45,7 +45,7 @@ export const Modal: React.FC<ModalProps> = ({
             onChange={handleChange}
           />
           <button onClick={() => handleOnClick(id)}>メモ追加</button>
-          <SummaryMolecules summary={summary} />
+          <SummaryEdit summary={summary} />
           <ButtonAtom
             onClick={() => setIsOpen(false)}
             title='モーダルを閉じる'
