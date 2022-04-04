@@ -11,6 +11,7 @@ type ModalProps = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   id: number | string;
   handleOnClick: (id: number | string) => void;
+  handleUpdate: () => void;
 };
 
 export const Modal: React.FC<ModalProps> = ({
@@ -21,7 +22,12 @@ export const Modal: React.FC<ModalProps> = ({
   id,
   handleChange,
   handleOnClick,
+  handleUpdate,
 }) => {
+  const handleAddMemo = (id: number | string) => {
+    handleOnClick(id);
+    handleUpdate;
+  };
   return (
     <Dialog
       // initialFocus={completeButtonRef}
@@ -44,7 +50,7 @@ export const Modal: React.FC<ModalProps> = ({
             value={content}
             onChange={handleChange}
           />
-          <button onClick={() => handleOnClick(id)}>メモ追加</button>
+          <button onClick={() => handleAddMemo(id)}>メモ追加</button>
           <SummaryEdit summary={summary} />
           <ButtonAtom
             onClick={() => setIsOpen(false)}

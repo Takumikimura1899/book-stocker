@@ -3,13 +3,7 @@ import { ButtonAtom } from '../atoms/ButtonAtom';
 import { MemoEditModal } from './MemoEditModal';
 
 type Props = {
-  summary: {
-    title: string;
-    item: {
-      itemId: string | number;
-      itemData: string;
-    }[];
-  };
+  summary: Summary;
 };
 
 export const SummaryEdit: React.FC<Props> = ({ summary }) => {

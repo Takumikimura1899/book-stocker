@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
+    "@types/nanoid": "^3.0.0",
     "@types/react-dropzone": "^5.1.0",
     "firebase": "^9.6.1",
+    "nanoid": "^3.3.2",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",

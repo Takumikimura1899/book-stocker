@@ -6,6 +6,7 @@ import { ButtonAtom } from '../atoms/ButtonAtom';
 import { Modal } from '../molecules/Modal';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
 import { MemoModal } from './MemoModal';
+import { nanoid } from 'nanoid';
 
 // type Props = {
 //   data: Content;
@@ -24,19 +25,21 @@ interface Params extends ParsedUrlQuery {
 }
 
 export const Summary: React.FC<Props> = ({ summary, params }) => {
-  const [summaryData, setSummaryData] = useState<ContentSummary>(summary);
-  const [summaryDataTitle, setSummaryTitle] = useState<string>('test');
+  const [summaryData, setSummaryData] = useState<Summary[]>(summary);
+  const [addSummaryDataTitle, setAddSummaryTitle] = useState<string>('test');
 
   const handleAddItem = () => {
-    console.log(summaryData, summaryDataTitle);
+    console.log(summaryData, addSummaryDataTitle);
 
-    const id = Math.random() * 1000;
-    const newSummary: ContentSummary = [
+    const summaryId = nanoid();
+    const itemId = nanoid();
+
+    const newSummary = [
       ...summaryData,
       {
-        id: id,
-        title: summaryDataTitle,
-        item: [{ itemId: 0, itemData: 'addItemData' }],
+        id: summaryId,
+        title: addSummaryDataTitle,
+        item: [{ itemId: itemId, itemData: 'addItemData' }],
       },
     ];
     setSummaryData(newSummary);
@@ -48,13 +51,10 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const testTitle = e.target.value;
-    setSummaryTitle(testTitle);
+    setAddSummaryTitle(testTitle);
   };
 
-  const handleUpdate = (
-    summaryData: ContentSummary,
-    params: ParsedUrlQuery
-  ) => {
+  const handleUpdate = (summaryData: Summary[], params: ParsedUrlQuery) => {
     updateSummary(params, summaryData);
   };
 
@@ -66,34 +66,26 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
           className='text-white border-2 '
           type='text'
           onChange={onChangeText}
-          value={summaryDataTitle}
+          value={addSummaryDataTitle}
         />
-        <button className='mx-4' onClick={handleAddItem}>
-          アイテムを追加
-        </button>
-        <button onClick={() => handleUpdate(summaryData, params!)}>更新</button>
+        <ButtonAtom title='アイテムを追加' onClick={handleAddItem} />
+        <ButtonAtom
+          onClick={() => handleUpdate(summaryData, params!)}
+          title='保存する'
+        />
       </div>
       <div>
         <p>要約:</p>
         <div className='bg-indigo-500 p-10 w-full'>
           {summaryData.map((summary) => {
-            const { id } = summary;
-
-            // return (
-            //   <SummaryMolecules
-            //     item={item}
-            //     index={index}
-            //     key={index}
-            //     test={test}
-            //     handleChange={handleChange}
-            //   />
             return (
               <SummaryItem
-                key={id}
-                id={id}
+                key={summary.id}
+                id={summary.id}
                 summary={summary}
                 setSummaryData={setSummaryData}
                 summaryData={summaryData}
+                handleUpdate={() => handleUpdate(summaryData, params!)}
               />
             );
           })}
@@ -106,20 +98,15 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 const SummaryItem = ({
   summary,
   id,
-  setSummaryData,
   summaryData,
+  setSummaryData,
+  handleUpdate,
 }: {
-  summary: {
-    id: string | number;
-    title: string;
-    item: {
-      itemId: string | number;
-      itemData: string;
-    }[];
-  };
+  summary: Summary;
   id: number | string;
-  setSummaryData: React.Dispatch<React.SetStateAction<ContentSummary>>;
   summaryData: ContentSummary;
+  setSummaryData: React.Dispatch<React.SetStateAction<ContentSummary>>;
+  handleUpdate: () => void;
 }) => {
   const [content, setContent] = useState<string>('contentはここです');
   const [isOpen, setIsOpen] = useState(false);
@@ -136,7 +123,7 @@ const SummaryItem = ({
 
   const handleOnClick = (id: number | string) => {
     // idはちゃんとつけましょう！
-    const itemId = Math.random() * 1000;
+    const itemId = nanoid();
     const newSummary = summaryData.map((summary) =>
       summary.id === id
         ? {
@@ -158,6 +145,7 @@ const SummaryItem = ({
         setIsOpen={setIsOpen}
         handleChange={handleChange}
         handleOnClick={handleOnClick}
+        handleUpdate={handleUpdate}
       />
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <div className='flex'>
