@@ -27,6 +27,7 @@ interface Params extends ParsedUrlQuery {
 export const Summary: React.FC<Props> = ({ summary, params }) => {
   const [summaryData, setSummaryData] = useState<Summary[]>(summary);
   const [addSummaryDataTitle, setAddSummaryTitle] = useState<string>('test');
+  const [newMemo, setNewMemo] = useState<string>('');
 
   const handleAddItem = () => {
     console.log(summaryData, addSummaryDataTitle);
@@ -81,10 +82,11 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
             return (
               <SummaryItem
                 key={summary.id}
-                id={summary.id}
                 summary={summary}
-                setSummaryData={setSummaryData}
                 summaryData={summaryData}
+                newMemo={newMemo}
+                setNewMemo={setNewMemo}
+                setSummaryData={setSummaryData}
                 handleUpdate={() => handleUpdate(summaryData, params!)}
               />
             );
@@ -97,23 +99,25 @@ export const Summary: React.FC<Props> = ({ summary, params }) => {
 
 const SummaryItem = ({
   summary,
-  id,
   summaryData,
+  newMemo,
+  setNewMemo,
   setSummaryData,
   handleUpdate,
 }: {
   summary: Summary;
-  id: number | string;
-  summaryData: ContentSummary;
+  summaryData: Summary[];
+  newMemo: string;
+  setNewMemo: React.Dispatch<React.SetStateAction<string>>;
   setSummaryData: React.Dispatch<React.SetStateAction<ContentSummary>>;
   handleUpdate: () => void;
 }) => {
-  const [content, setContent] = useState<string>('contentはここです');
+  // const [newMemo, setNewMemo] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
   const completeButtonRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
+    setNewMemo(e.target.value);
     console.log(e.target.value);
   };
 
@@ -122,13 +126,12 @@ const SummaryItem = ({
   };
 
   const handleOnClick = (id: number | string) => {
-    // idはちゃんとつけましょう！
     const itemId = nanoid();
     const newSummary = summaryData.map((summary) =>
       summary.id === id
         ? {
             ...summary,
-            item: [...summary.item, { itemId: itemId, itemData: content }],
+            item: [...summary.item, { itemId: itemId, itemData: newMemo }],
           }
         : summary
     );
@@ -140,8 +143,8 @@ const SummaryItem = ({
       <Modal
         isOpen={isOpen}
         summary={summary}
-        content={content}
-        id={id}
+        content={newMemo}
+        id={summary.id}
         setIsOpen={setIsOpen}
         handleChange={handleChange}
         handleOnClick={handleOnClick}

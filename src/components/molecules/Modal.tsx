@@ -47,6 +47,7 @@ export const Modal: React.FC<ModalProps> = ({
           <input
             className='w-3/5'
             type='text'
+            placeholder='メモの内容を入力してください'
             value={content}
             onChange={handleChange}
           />
