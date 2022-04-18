@@ -34,6 +34,7 @@ export const MemoEditModal: React.FC<ModalProps> = ({
             onClick={() => setIsOpen(false)}
             title='モーダルを閉じる'
           />
+          <button onClick={() => console.log(itemData)}>log</button>
         </div>
       </div>
     </Dialog>

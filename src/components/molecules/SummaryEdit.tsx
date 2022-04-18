@@ -7,28 +7,36 @@ type Props = {
 };
 
 export const SummaryEdit: React.FC<Props> = ({ summary }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const onClick = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
       {/* <textarea name='' id='' value={test} onChange={(e) => handleChange(e)} /> */}
       {summary.item.map(({ itemData, itemId }) => {
         return (
           <div key={itemId} className='flex'>
-            <p>{itemData}</p>
-            <ButtonAtom title='編集する' onClick={onClick} />
-            {isOpen && (
-              <MemoEditModal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                itemData={itemData}
-              />
-            )}
+            <MemoEdit itemData={itemData} itemId={itemId} />
           </div>
         );
       })}
+    </>
+  );
+};
+
+const MemoEdit: React.FC<SummaryItem> = ({ itemData, itemId }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const onClick = () => {
+    setIsOpen(!isOpen);
+  };
+  return (
+    <>
+      <p>{itemData}</p>
+      <ButtonAtom title='編集する' onClick={onClick} />
+      {isOpen && (
+        <MemoEditModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          itemData={itemData}
+        />
+      )}
     </>
   );
 };

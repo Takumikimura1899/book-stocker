@@ -5,7 +5,7 @@ import { SummaryEdit } from './SummaryEdit';
 
 type ModalProps = {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMemoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   summary: Summary;
   content: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -14,11 +14,11 @@ type ModalProps = {
   handleUpdate: () => void;
 };
 
-export const Modal: React.FC<ModalProps> = ({
+export const MemoModal: React.FC<ModalProps> = ({
   isOpen,
   summary,
   content,
-  setIsOpen,
+  setIsMemoModalOpen,
   id,
   handleChange,
   handleOnClick,
@@ -26,14 +26,15 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const handleAddMemo = (id: number | string) => {
     handleOnClick(id);
-    handleUpdate;
+    console.log('メモが追加されました');
+
+    // handleUpdate;
   };
   return (
     <Dialog
       // initialFocus={completeButtonRef}
       open={isOpen}
-      onClose={() => setIsOpen(false)}
-      as='div'
+      onClose={() => setIsMemoModalOpen(false)}
       // static={true}
       className={`fixed z-10 inset-0 overflow-y-auto ${
         isOpen ? 'bg-gray-900 bg-opacity-80' : ''
@@ -47,18 +48,18 @@ export const Modal: React.FC<ModalProps> = ({
           <input
             className='w-3/5'
             type='text'
-            placeholder='メモの内容を入力してください'
+            placeholder=''
             value={content}
             onChange={handleChange}
           />
           <button onClick={() => handleAddMemo(id)}>メモ追加</button>
           <SummaryEdit summary={summary} />
           <ButtonAtom
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsMemoModalOpen(false)}
             title='モーダルを閉じる'
           />
           <ButtonAtom
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsMemoModalOpen(false)}
             title='モーダルを閉じる'
           />
           {/* <button onClick={() => setIsOpen(false)}>Cancel</button> */}

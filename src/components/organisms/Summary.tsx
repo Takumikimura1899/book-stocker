@@ -3,9 +3,8 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { useRef, useState } from 'react';
 import { updateSummary } from '~/src/lib/firebase';
 import { ButtonAtom } from '../atoms/ButtonAtom';
-import { Modal } from '../molecules/Modal';
+import { MemoModal } from '../molecules/MemoModal';
 import { SummaryMolecules } from '../molecules/SummaryMolecules';
-import { MemoModal } from './MemoModal';
 import { nanoid } from 'nanoid';
 
 // type Props = {
@@ -113,7 +112,7 @@ const SummaryItem = ({
   handleUpdate: () => void;
 }) => {
   // const [newMemo, setNewMemo] = useState<string>('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const completeButtonRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,20 +139,25 @@ const SummaryItem = ({
 
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        summary={summary}
-        content={newMemo}
-        id={summary.id}
-        setIsOpen={setIsOpen}
-        handleChange={handleChange}
-        handleOnClick={handleOnClick}
-        handleUpdate={handleUpdate}
-      />
+      {isMemoModalOpen && (
+        <MemoModal
+          isOpen={isMemoModalOpen}
+          summary={summary}
+          content={newMemo}
+          id={summary.id}
+          setIsMemoModalOpen={setIsMemoModalOpen}
+          handleChange={handleChange}
+          handleOnClick={handleOnClick}
+          handleUpdate={handleUpdate}
+        />
+      )}
       <div className='border-2 w-1/4 rounded-md my-4 bg-teal-300 pl-4'>
         <div className='flex'>
           <p>{summary.title}</p>
-          <ButtonAtom onClick={() => setIsOpen(true)} title='編集する' />
+          <ButtonAtom
+            onClick={() => setIsMemoModalOpen(true)}
+            title='編集する'
+          />
         </div>
         <SummaryMolecules summary={summary} />
       </div>

@@ -12,7 +12,7 @@ type BookGenre = 'マンガ' | '雑誌' | 'ビジネス' | '文学' | 'IT' | '�
 type Summary = {
   id: number | string;
   title: string;
-  item: { itemId: string | number; itemData: string }[];
+  item: SummaryItem[];
 };
 
 type Content = {
@@ -30,3 +30,5 @@ type Content = {
 type ValueOf<T> = T[keyof T];
 
 type ContentSummary = ValueOf<Required<Pick<Content, 'summary'>>>;
+
+type SummaryItem = { itemId: string | number; itemData: string };
